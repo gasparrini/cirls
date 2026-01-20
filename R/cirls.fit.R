@@ -36,8 +36,6 @@
 #' @seealso [buildCmat][buildCmat()] for details on constraint specification and [cirls.control][cirls.control()] for parameters controlling the algorithm. [glm][stats::glm()] provides details on `glm` objects.
 #'
 #' @references
-#' Masselot, P., Nenon, D., Vanoli, J., Chalabi, Z., Gasparrini, A., 2025. Estimation and inference in generalised linear models with constrained iteratively-reweighted least squares. *ArXiv preprint*. [DOI:10.48550/arXiv.2509.18406](https://doi.org/10.48550/arXiv.2509.18406)
-#'
 #' Goldfarb, D., Idnani, A., 1983. A numerically stable dual method for solving strictly convex quadratic programs. *Mathematical Programming* **27**, 1–33. [DOI:10.1007/BF02591962](https://doi.org/10.1007/BF02591962)
 #'
 #' Meyer, M.C., 2013. A Simple New Algorithm for Quadratic Programming with Applications in Statistics. *Communications in Statistics - Simulation and Computation* **42**, 1126–1139. [DOI:10.1080/03610918.2012.659820](https://doi.org/10.1080/03610918.2012.659820)

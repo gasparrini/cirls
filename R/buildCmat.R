@@ -20,38 +20,36 @@
 #'
 #' This function also checks that any constraint matrix provided to [cirls.fit][cirls.fit()] is irreducible. See [checkCmat][checkCmat()] for details.
 #'
-#' There are three ways to specify constraints in `cirls`:
-#' 1. Through the `constr` formula. This provides a simple interface for many commonly encountered constraints and is the recommended way for new users.
-#' 2. Through named lists of constraint matrices and bounds can be provided to `Cmat`/`lb`/`ub` arguments. This is useful for constraints that are not (yet) implemented for the `constr` formula.
-#' 3. Through a fully specified `Cmat`/`lb`/`ub`, provided directly.
-#'
-#' Each one is detailed in a subsection below. Note that options 1 and 2 can be used simultaneously.
+#' There are three ways to specify constraints in `cirls`. Each one is detailed in a subsetction below. Note that options 1 and 2 can be used simultaneously.
+#' 1. The `constr` formula provides a simple interface for many commonly encountered constraints. This is the recommended way for new users.
+#' 2. A named list of constraint matrices and bounds can be provided to `Cmat`/`lb`/`ub` arguments. This is useful for constraints that are not (yet) implemented for the `constr` formula.
+#' 3. A fully specified `Cmat`/`lb`/`ub` can be provided directly.
 #'
 #' ## The `constr` formula
 #'
 #' The easiest way to specify constraints is as a formula of the form `constr = ~ cons(x, ...)` where `cons` represents a constraint to be applied to term `x` of the `cirls` model and `...` represents additional arguments that depend on the `cons` function. Several constraints can be applied to the same or to different terms, for example `constr = ~ cons1(x) + cons1(y) + cons2(x)`. All terms appearing in `constr` can either be vectors or matrices and should be found in the model.frame `mf`, otherwise the constraint is dropped with a warning.
 #'
-#' Internally, `buildCmat` will look for a function called `consConstr` that returns a list of `Cmat`, `lb`, and `ub` built specifically for the term provided to `cons()` in the formula. This provides a simple way to add new constraints to the interface, by creating a function with the `Constr` suffix, taking a term as an input and outputting a list with `Cmat`, `lb`, and `ub`.
+#' Internally, `buildCmat` will look for a function called `consConstr` that returns a list of `Cmat`, `lb` and `ub` built specifically for the term provided to `cons()` in the formula. This provides a simple way to add new constraints to the interface, by creating a function with the `Constr` suffix, taking a term as an input and outputting a list with `Cmat`, `lb` and `ub`.
 #'
-#' The list of available `cons` functions can be found on the main help page of the [cirls][cirls-package] package (sub-section 'Built-in constraints'). Each function has its own help page detailing the implemented constraint with available parameters.
+#' The list of available `cons` functions can be found on the main help page of the [cirls][cirls-package] package. Each function has its own help page detailing the implemented constraint with available parameter.
 #'
 #' ## Term-specific `Cmat`/`lb`/`ub`
 #'
-#' Constraints for specific terms of the model can be provided as named lists to one or several of arguments `Cmat`, `lb`, and `ub`, which represent the constraint matrix, lower bound, and upper bound, respectively. This will take the form `Cmat = list(x = cm1, y = cm2)` where `x` and `y` are terms in the model.frame `mf`, while `cm1` and `cm2` are constraint matrices (or bound vectors for `lb` and `ub`). Note that these objects *must* be consistent with the dimensions of their respective terms.
+#' Constraints for specific terms of the model can be provided as named lists to one or several of arguments `Cmat`,`lb` and `ub` which represent the constraint matrix, lower bound and upper bound respectively. This will take the form `Cmat = list(x = cm1, y = cm2)` where `x` and `y` are terms in the model.frame `mf`, while `cm1` and `cm2` are constraint matrices (or bound vectors for `lb` and `ub`) *that should be consistent with the dimensions of their respective terms*.
 #'
-#' When terms are found in `lb` and/or `ub`, but not in `Cmat`, it is assumed that *simple* bound constraints are to be applied to the terms. In that case, `Cmat` will be internally created as a simple identity matrix matching the dimensions of the terms in question.
+#' When terms are found in `lb` and/or `ub`, but not in `Cmat`, it is assumed that *simple bound constraints are to be applied to the terms*. In that case, `Cmat` will be internally created as a simple identity matrix matching the dimensions of the terms in question.
 #'
 #' Names in `Cmat`/`lb`/`ub` can include several terms, which should be separated by a semicolon `;`, for instance `Cmat = list("x;y" = cm)`. This allows specifying constraints that span several terms in the model.
 #'
 #' ## Fully specified `Cmat`/`lb`/`ub`
 #'
-#' If one of `Cmat`/`lb`/`ub` is neither `NULL` nor a list, it is assumed it is provided as fully specified, i.e. should be returned as it is. In that case, `constr` and any list provided to other arguments are ignored. When not all of `Cmat`/`lb`/`ub` are fully specified, the other ones will be filled with default values that match the dimension of the model matrix, i.e. an identity matrix for `Cmat`, a vector of zeros for `lb` and a vector of `Inf` for `ub`.
+#' If one of `Cmat`/`lb`/`ub` is neither `NULL` nor a list, it is assumed it is provided fully specified, i.e. should be returned as is. In that case, `constr` and any list provided to other arguments are ignored. When not all of `Cmat`/`lb`/`ub` are fully specified, the other ones will be filled with default values that match the dimension of the model matrix, i.e. an identity matrix for `Cmat`, a vector of zeros for `lb` and a vector of `Inf` for `ub`.
 #'
 #' ## Unconstrained model
 #'
 #' When all of `constr`/`Cmat`/`lb`/`ub` are `NULL`, a list of empty `Cmat`/`lb`/`ub` is returned and an unconstrained model is fit.
 #'
-#' @returns A list with elements `Cmat`, `lb`, and `ub` containing the fully specified constraint matrix, lower and upper bounds for the model specified in argument `mf`. `Cmat` additionally includes an attribute called `terms` that maps constraints represented in the matrix to individual terms in the model.
+#' @returns A list with elements `Cmat`, `lb` and `ub` containing the fully specified constraint matrix, lower and upper bounds for the model specified in argument `mf`. `Cmat` additionally include an attribute called `terms` which maps constraints represented in the matrix to individual terms in the model.
 #'
 #' @seealso The main [help page][cirls-package] for the list of `cons` functions implemented and examples. [checkCmat][checkCmat()] for details on irreducibility.
 #'

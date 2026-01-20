@@ -10,9 +10,12 @@ cmatic <- rbind(
   shapeConstr(matrix(NA, 0, p), shape = "cvx")$Cmat # Convex
 )
 
-# Checking indicates that some constraints are redundant.
+# Checking indicates that some constraints are redundant
 # Returns reduced matrix and a warning
 checkCmat(cmatic)
+
+# Compare without removing the redundant constraints
+checkCmat(cmatic, reduce = FALSE)
 
 # Note that this is silently done when both "inc" and "cvx" are provided
 shapeConstr(matrix(NA, 0, p), shape = c("inc", "cvx"))$Cmat

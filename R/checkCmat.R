@@ -26,20 +26,20 @@
 #' @param warn Whether to warn the user when redundant and equality constraints are found.
 #'
 #' @details
-#' The user typically doesn't need to use `checkCmat` as it is internally called by [buildCmat][buildCmat()] and in some Constr functions creating `Cmat`/`lb`/`ub` . However, it might be useful in the case of inconsistent constraints or underlying equality constraints.
+#' The user typically does not need to use `checkCmat` as it is internally called by [buildCmat][buildCmat()] and in some Constr functions used to create `Cmat`/`lb`/`ub` . However, it might be useful in the case of inconsistent constraints or underlying equality constraints when users are building such objects directly.
 #'
 #' ## Irreducibility
 #'
 #' `Cmat` is irreducible if there is no *redundant* constraint, and no *underlying equality* constraint.
 #'
-#' A row in `Cmat` is *redundant* if it can be expressed as a *positive* linear combination of other rows. When it happens, it means the corresponding constraint is actually implicitly included in other constraints, and can be dropped without affecting the problem. Rows that only contain zeros are considered redundant.
+#' A row in `Cmat` is *redundant* if it can be expressed as a *positive* linear combination of other rows. When it happens, it means the corresponding constraint is actually implicitly included in other constraints, and can be dropped without affecting the problem. For instance, rows that only contain zeros are considered redundant.
 #'
-#' When it exists a linear combination of rows in `Cmat` that result in the null vector, it means that there is an *underlying equality* constraint. In that case, it means the corresponding rows can be reduced to a single equality constraint. Note that underlying constraints are left as is in the returned `Cmat` even when `reduce = TRUE`, and it is left to the user to figure out whether to reduce it.
+#' When it exists a linear combination of rows in `Cmat` that results in a null vector, it means that there is an *underlying equality* constraint. In that case, it means the corresponding rows can be reduced to a single equality constraint. Note that underlying constraints are left as they are in the returned `Cmat` even when `reduce = TRUE`, and it is left to the user to figure out whether to reduce them.
 #'
-#' @note `checkCmat` works when only `Cmat` is provided. `lb`/`ub` can be provided to conveniently be reduced in the case of redundant constraints, but they should be consistent with `Cmat`.
+#' @note `checkCmat` works when only `Cmat` is provided. `lb`/`ub` can be provided to conveniently be passed and reduced in the case of redundant constraints, but they must be consistent with `Cmat`.
 #'
 #' @returns A list with the following elements:
-#' \item{redundant}{Logical vector indicating redundant constraints in the provided `Cmat`.}
+#' \item{redundant}{Logical vector indicating redundant constraints expressed in the rows `Cmat`.}
 #' \item{equality}{An integer vector indicating the groups of underlying equality constraints in the provided `Cmat`. Zero values indicate that the row is not part of any underlying equality constraint and higher values indicate which equality constraint it is part of.}
 #' \item{Cmat/lb/ub}{The reduced constraints when `reduce = TRUE` or the provided constraints otherwise.}
 #'

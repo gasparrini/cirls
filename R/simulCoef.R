@@ -7,16 +7,16 @@
 #' Methods for inference on the coefficients of a `cirls` object.
 #'
 #' @description
-#' Simulates coefficients for a fitted `cirls` object and uses these simulations for inference. `confint` and `vcov` directly compute confidence intervals and the Variance-Covariance matrix for coefficients from a fitted `cirls` object. These methods supersede the default methods for `cirls` objects.
+#' `simulCoef` simulates coefficients for a fitted `cirls` object and uses these simulations for inference. `confint` and `vcov` directly compute confidence intervals and the variance-covariance matrix for coefficients from a fitted `cirls` object. These methods for `cirls` objects supersede the default `glm` methods.
 #'
 #' @param object A fitted `cirls` object.
 #' @param nsim The number of simulations to perform.
-#' @param seed Either NULL or an integer that will be used in a call to [set.seed()] before simulating the coefficients.
-#' @param complete If FALSE, doesn't return inference for undetermined coefficients in case of an over-determined model.
-#' @param parm A specification of which parameters to compute the confidence intervals for. Either a vector of numbers or a vector of names. If missing, all parameters are considered.
+#' @param seed Either `NULL` or an integer that will be used in a call to [set.seed()] before simulating the coefficients.
+#' @param complete If `FALSE`, it does not return inference for undetermined coefficients in case of an over-determined model.
+#' @param parm A specification of which parameters to compute the confidence intervals for. Either a vector of index numbers or a vector of names. If missing, all parameters are considered.
 #' @param level The confidence level required.
 #' @param constrained A logical switch indicating whether to simulate from the constrained (the default) or unconstrained (see [uncons][uncons()]) coefficients distribution. When set to `FALSE` in `vcov`, returns the untruncated covariance matrix as in an unconstrained GLM.
-#' @param ... Further arguments passed to or from other methods. For `vcov` and `confint` can be used to provide a `seed` for the internal coefficient simulation.
+#' @param ... Further arguments passed to or from other methods. For `vcov` and `confint`, it can be used to provide a `seed` for the internal coefficient simulation.
 #'
 #' @details
 #'
@@ -24,7 +24,7 @@
 #' To perform inference for coefficients the `simulCoef` function simulates from the distribution of \eqn{\mathbf{C}\beta} which follows a **Truncated Multivariate Normal** distribution \eqn{TMVN(\mathbf{C}\beta^{*}, \mathbf{C}\mathbf{\Sigma}^{*}\mathbf{C}^{T}, \mathbf{l}, \mathbf{u})} where \eqn{\mathbf{C}} is the constraint matrix with bound vectors \eqn{\mathbf{l}} and \eqn{\mathbf{u}}, and \eqn{\beta^{*}} and \eqn{\mathbf{\Sigma}^{*}} are the unconstrained coefficient vector and variance matrix. The TMVN simulations are then back-transformed to the domain of \eqn{\beta} to allow for inference.
 #'
 #' ## Functions
-#' `simulCoef` is the workhorse of the inference and is called internally by `confint` and `vcov`. They are custom methods for [cirls][cirls.fit()] objects to supersede the default methods used for [glm][stats::glm()] objects. `simulCoef` doesn't need to be used directly for confidence intervals and variance-covariance matrices, but it can be used to check other summaries of the coefficients distribution.
+#' `simulCoef` is the workhorse of the inference and is called internally by `confint` and `vcov`. All of these are custom methods for [cirls][cirls.fit()] objects that supersede the default methods used for [glm][stats::glm()] objects. `simulCoef` does not need to be used directly for confidence intervals and variance-covariance matrices, but it can be used to check other summaries of the coefficients distribution.
 #'
 #' @note
 #' These methods only work when there are less constraints than variables in `cirls` model, i.e. when `Cmat` has less rows than columns.
