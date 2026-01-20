@@ -57,9 +57,9 @@
 #' @references
 #' Masselot, P., Nenon, D., Vanoli, J., Chalabi, Z., Gasparrini, A., 2025. Estimation and inference in generalised linear models with constrained iteratively-reweighted least squares. *ArXiv preprint*. [DOI:10.48550/arXiv.2509.18406](https://doi.org/10.48550/arXiv.2509.18406)
 #'
+#' @example inst/examples/ex_london_nonneg.R
 #' @example inst/examples/ex_warming_factor.R
 #' @example inst/examples/ex_warming_splines.R
 #' @example inst/examples/ex_fgl_coda.R
-#' @example inst/examples/ex_london_nonneg.R
 #'
 "_PACKAGE"

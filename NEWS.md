@@ -1,3 +1,8 @@
+# 0.4.0-4
+
+- New `shapeConstr` method for `strata` from `dlnm`
+- Some amendments to the help
+
 # 0.4.0-3
 
 - Slight improvement of the main help page and examples.

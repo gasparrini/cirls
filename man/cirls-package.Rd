@@ -88,6 +88,24 @@ The following supplant \code{glm} methods:
 
 \examples{
 ###############################################################################
+# Non-negative coefficient example with the london dataset
+
+library(splines)
+
+### Association between Ozone and mortality
+# Nonnegative constraint on Ozone
+model <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", cons = ~ shape(o3, "pos"))
+
+# Coefficient and confidence interval
+coef(model)[2]
+confint(model)[2,]
+
+# Comparing to an unconstrained model
+umodel <- uncons(model)
+coef(umodel)[2]
+confint(umodel)[2,]
+###############################################################################
 # Monotone strata levels with the warming dataset
 
 ### Fit the model
@@ -159,26 +177,6 @@ sum(coef(model)[-1])
 # Confidence intervals
 confint(model)
 
-###############################################################################
-# Non-negative coefficient example with the london dataset
-
-library(splines)
-
-### Association between CO and mortality
-# Model includes spline of date and day-of-week
-# Nonnegative constraint on CO
-model <- glm(death ~ co + weekdays(date) + ns(date, df = 7*8),
-  data = london, family = "quasipoisson",
-  method = "cirls.fit", cons = ~ shape(co, "pos"))
-
-# Coefficient and confidence interval
-coef(model)[2]
-confint(model)[2,]
-
-# Comparing to an unconstrained model
-umodel <- uncons(model)
-coef(umodel)[2]
-confint(umodel)[2,]
 }
 \references{
 Masselot, P., Nenon, D., Vanoli, J., Chalabi, Z., Gasparrini, A., 2025. Estimation and inference in generalised linear models with constrained iteratively-reweighted least squares. \emph{ArXiv preprint}. \href{https://doi.org/10.48550/arXiv.2509.18406}{DOI:10.48550/arXiv.2509.18406}

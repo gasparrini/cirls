@@ -24,7 +24,7 @@ The development version can be installed from GitHub using the `devtools` packag
 devtools::install_github("PierreMasselot/cirls")
 ```
 
-Please check the file [github-news.md](github-news.md) for changes in the development version compared to the CRAN one.
+Please check the [NEWS.md](NEWS.md) file for changes in the development version compared to the CRAN one.
 
 ## Usage
 

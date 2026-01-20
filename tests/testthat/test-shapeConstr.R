@@ -151,11 +151,11 @@ for (b in tested_bases){
 }})
 
 # Test for basis with no method
-test_that("We get the default method for unknown `onebasis`", {
-  strbasis <- onebasis(X, fun = "strata", df = p)
-  expect_warning(Cmat <- shapeConstr(strbasis, shape = "pos"))
-  expect_identical(Cmat$Cmat, diag(p), ignore_attr = TRUE)
-})
+# test_that("We get the default method for unknown `onebasis`", {
+#   strbasis <- onebasis(X, fun = "strata", df = p)
+#   expect_warning(Cmat <- shapeConstr(strbasis, shape = "pos"))
+#   expect_identical(Cmat$Cmat, diag(p), ignore_attr = TRUE)
+# })
 
 
 #-------------------------
@@ -260,6 +260,72 @@ test_that("Shape constraints on factors work", {
       -sqrt(.Machine$double.eps)))
 })
 
+
+#-------------------------
+# dlnm package: strata
+#-------------------------
+
+test_that("dlnm:::strata constraining works on london dataset", {
+
+  br <- c(20,40)
+  gr <- 1:100
+
+  # Unconstrained model
+  strb <- onebasis(london$pm10, "strata", breaks=br)
+  model <- glm(death ~ strb, family = quasipoisson(), data = london,
+    na.action = na.exclude)
+  nd <- list(strb = onebasis(gr, "strata", breaks=br))
+  pred <- predict(model, nd)
+
+  # Constrained
+  cmodel <- glm(death ~ strb, family = quasipoisson(), data = london,
+    na.action = na.exclude, method = "cirls.fit", constr = ~ shape(strb, "inc"))
+  cpred <- predict(cmodel, nd)
+
+  # Plot
+  plot(gr, pred, type = "l")
+  lines(gr, cpred, col = 2)
+
+  # Formal test
+  expect_gte(cpred[br[1] + 1], cpred[br[1] - 1])
+  expect_gte(cpred[br[2] + 1], cpred[br[2] - 1])
+})
+
+test_that("dlnm:::strata constraining works on simulated dataset", {
+
+  # Data
+  n <- 1000
+
+  # Generate a simple parabolic relationship
+  X <- 1:n
+  # eta <- log(10) + (x-.3)^2
+  eta <- - .5 * sin(X * 1.6 * pi / 10)
+
+  # Generate several
+  Y <- rpois(n, exp(eta))
+
+
+  # Strata basis
+  br <- 1:9 / 10
+  basis <- dlnm::onebasis(X, fun = "strata", breaks = br)
+
+  #----- Monotone
+
+  # Fit model
+  res <- predict(glm(Y ~ basis, family = "quasipoisson",
+    method = "cirls.fit", constr = ~ shape(basis, "inc")))
+
+  # Test results
+  expect_true(all(diff(res) >= -sqrt(.Machine$double.eps)))
+
+  #----- Convex
+  res2 <- predict(glm(Y ~ basis, family = "quasipoisson",
+    method = "cirls.fit", constr = ~ shape(basis, "cvx")))
+  res2 <- res2[c(br, 1) * 1000 - 50]
+
+  # Test results
+  expect_true(all(diff(res2, diff = 2) >= -sqrt(.Machine$double.eps)))
+})
 
 ###############################################################################
 # Constraints on subdomains

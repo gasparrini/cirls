@@ -13,7 +13,7 @@ cirls.control(constr = NULL, Cmat = NULL, lb = NULL, ub = NULL,
 
 \item{Cmat}{Constraint matrix specifying the linear constraints applied to coefficients. Can also be provided as a list of matrices for specific terms. See details in \link[=buildCmat]{buildCmat} for constraint specification.}
 
-\item{lb, ub}{Lower and upper bound vectors for the linear constraints. If not provided, defaults to 0 and Inf, respectively.}
+\item{lb, ub}{Lower and upper bound vectors for the linear constraints. If not provided, defaults to 0 and \code{Inf}, respectively.}
 
 \item{epsilon}{Positive convergence tolerance. The algorithm converges when the relative change in deviance is smaller than \code{epsilon}.}
 
@@ -21,9 +21,9 @@ cirls.control(constr = NULL, Cmat = NULL, lb = NULL, ub = NULL,
 
 \item{trace}{Logical indicating if output should be produced for each iteration.}
 
-\item{qp_solver}{The quadratic programming solver. One of \code{"quadprog"} (the default), \code{"osqp"} or \code{"coneproj"}.}
+\item{qp_solver}{The quadratic programming solver. One of \code{"quadprog"} (the default), \code{"osqp"}, or \code{"coneproj"}.}
 
-\item{qp_pars}{List of parameters specific to the quadratic programming solver. See respective packages help.}
+\item{qp_pars}{List of parameters specific to the quadratic programming solver. See the help pages in the respective packages (links below).}
 }
 \value{
 A named list containing arguments to be used in \link[=cirls.fit]{cirls.fit}.
@@ -42,8 +42,8 @@ Constraint specification through the \code{constr}, \code{Cmat}, \code{lb} and \
 
 The function \link[=cirls.fit]{cirls.fit} relies on a quadratic programming solver. Several solver are currently available.
 \itemize{
-\item \code{"quadprog"} (the default) performs a dual algorithm to solve the quadratic program. It relies on the function \link[quadprog:solve.QP]{solve.QP}.
-\item \code{"osqp"} solves the quadratic program via the Alternating Direction Method of Multipliers (ADMM). Internally calls the function \link[osqp:solve_osqp]{solve_osqp}.
+\item \code{"quadprog"} (the default) solves the quadratic program via a dual algorithm. It relies on the function \link[quadprog:solve.QP]{solve.QP}.
+\item \code{"osqp"} solves the quadratic program via the Alternating Direction Method of Multipliers (ADMM). It relies on the function \link[osqp:solve_osqp]{solve_osqp}.
 \item \code{"coneproj"} solves the quadratic program by a cone projection method. It relies on the function \link[coneproj:qprog]{qprog}.
 }
 
@@ -52,25 +52,35 @@ Each solver has specific parameters that can be controlled through the argument 
 }
 \examples{
 ###############################################################################
-# Non-negative coefficient example with the london dataset
+# Examples of control parameters
 
-library(splines)
+# The simplest way to specify parameters is through ...
+model <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", cons = ~ shape(o3, "pos"))
+osqpmodel <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", cons = ~ shape(o3, "pos"), qp_solver = "osqp")
 
-### Association between CO and mortality
-# Model includes spline of date and day-of-week
-# Nonnegative constraint on CO
-model <- glm(death ~ co + weekdays(date) + ns(date, df = 7*8),
-  data = london, family = "quasipoisson",
-  method = "cirls.fit", cons = ~ shape(co, "pos"))
+# Comparing the control
+model$control
+osqpmodel$control
 
-# Coefficient and confidence interval
-coef(model)[2]
-confint(model)[2,]
+# Alternatively through the control argument
+osqpmodel2 <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", control = list(
+    cons = ~ shape(o3, "pos"), qp_solver = "osqp"))
+all.equal(osqpmodel$control, osqpmodel2$control)
 
-# Comparing to an unconstrained model
-umodel <- uncons(model)
-coef(umodel)[2]
-confint(umodel)[2,]
+# However, both cannot be used at the same time
+osqpmodel3 <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", control = list(cons = ~ shape(o3, "pos")),
+  qp_solver = "osqp")
+all.equal(osqpmodel$control, osqpmodel3$control)
+
+# The control argument takes precedence
+model2 <- glm(death ~ o3, data = london, family = "quasipoisson",
+  method = "cirls.fit", control = list(cons = ~ shape(o3, "pos")),
+  cons = ~ shape(o3, "neg"))
+model2$control$cons
 }
 \seealso{
 Specification of a \link[=cirls-package]{cirls} model and constraint specification in \link[=buildCmat]{buildCmat}.
