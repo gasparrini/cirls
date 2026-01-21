@@ -48,7 +48,7 @@ edf(model)
 
 ### Compare with an unconstrained model
 
-# Refit the model
+# Refit the model without constraints
 umodel <- uncons(model)
 
 # Add result

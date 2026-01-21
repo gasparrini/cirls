@@ -17,7 +17,7 @@ checkCmat(Cmat, lb = NULL, ub = NULL, reduce = TRUE, warn = TRUE)
 }
 \value{
 A list with the following elements:
-\item{redundant}{Logical vector indicating redundant constraints in the provided \code{Cmat}.}
+\item{redundant}{Logical vector indicating redundant constraints expressed in the rows \code{Cmat}.}
 \item{equality}{An integer vector indicating the groups of underlying equality constraints in the provided \code{Cmat}. Zero values indicate that the row is not part of any underlying equality constraint and higher values indicate which equality constraint it is part of.}
 \item{Cmat/lb/ub}{The reduced constraints when \code{reduce = TRUE} or the provided constraints otherwise.}
 }
@@ -25,18 +25,18 @@ A list with the following elements:
 Checks whether some constraints are redundant and can be removed, and whether some constraints can be reduced into an equality constraint. If requested, redundant constraints are removed, but not equality ones.
 }
 \details{
-The user typically doesn't need to use \code{checkCmat} as it is internally called by \link[=buildCmat]{buildCmat} and in some Constr functions creating \code{Cmat}/\code{lb}/\code{ub} . However, it might be useful in the case of inconsistent constraints or underlying equality constraints.
+The user typically does not need to use \code{checkCmat} as it is internally called by \link[=buildCmat]{buildCmat} and in some Constr functions used to create \code{Cmat}/\code{lb}/\code{ub} . However, it might be useful in the case of inconsistent constraints or underlying equality constraints when users are building such objects directly.
 \subsection{Irreducibility}{
 
 \code{Cmat} is irreducible if there is no \emph{redundant} constraint, and no \emph{underlying equality} constraint.
 
-A row in \code{Cmat} is \emph{redundant} if it can be expressed as a \emph{positive} linear combination of other rows. When it happens, it means the corresponding constraint is actually implicitly included in other constraints, and can be dropped without affecting the problem. Rows that only contain zeros are considered redundant.
+A row in \code{Cmat} is \emph{redundant} if it can be expressed as a \emph{positive} linear combination of other rows. When it happens, it means the corresponding constraint is actually implicitly included in other constraints, and can be dropped without affecting the problem. For instance, rows that only contain zeros are considered redundant.
 
-When it exists a linear combination of rows in \code{Cmat} that result in the null vector, it means that there is an \emph{underlying equality} constraint. In that case, it means the corresponding rows can be reduced to a single equality constraint. Note that underlying constraints are left as is in the returned \code{Cmat} even when \code{reduce = TRUE}, and it is left to the user to figure out whether to reduce it.
+When it exists a linear combination of rows in \code{Cmat} that results in a null vector, it means that there is an \emph{underlying equality} constraint. In that case, it means the corresponding rows can be reduced to a single equality constraint. Note that underlying constraints are left as they are in the returned \code{Cmat} even when \code{reduce = TRUE}, and it is left to the user to figure out whether to reduce them.
 }
 }
 \note{
-\code{checkCmat} works when only \code{Cmat} is provided. \code{lb}/\code{ub} can be provided to conveniently be reduced in the case of redundant constraints, but they should be consistent with \code{Cmat}.
+\code{checkCmat} works when only \code{Cmat} is provided. \code{lb}/\code{ub} can be provided to conveniently be passed and reduced in the case of redundant constraints, but they must be consistent with \code{Cmat}.
 }
 \examples{
 ###################################################
@@ -51,9 +51,12 @@ cmatic <- rbind(
   shapeConstr(matrix(NA, 0, p), shape = "cvx")$Cmat # Convex
 )
 
-# Checking indicates that some constraints are redundant.
+# Checking indicates that some constraints are redundant
 # Returns reduced matrix and a warning
 checkCmat(cmatic)
+
+# Compare without removing the redundant constraints
+checkCmat(cmatic, reduce = FALSE)
 
 # Note that this is silently done when both "inc" and "cvx" are provided
 shapeConstr(matrix(NA, 0, p), shape = c("inc", "cvx"))$Cmat

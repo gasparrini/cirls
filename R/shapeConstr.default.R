@@ -11,13 +11,13 @@ shapeConstr.default <- function(x, shape, intercept = FALSE, ...) {
 
   # Matrix dimension
   if (length(dim(x)) < 2) x <- as.matrix(x)
-  ord <- ncol(x)
+  ord <- ncol(x) + !intercept
 
   # Check parameters
   cpars <- chkshp(shape, ord)
 
   # Create constraint matrices
-  knots <- seq_len(2 * ord + !intercept)
+  knots <- seq_len(2 * ord)
   Cmat <- lapply(cpars, function(cp) dmat(cp[1], cp[2], knots, ord))
   Cmat <- do.call(rbind, Cmat)
 

@@ -20,17 +20,17 @@ simulCoef(object, nsim = 1, seed = NULL, complete = TRUE,
 
 \item{nsim}{The number of simulations to perform.}
 
-\item{seed}{Either NULL or an integer that will be used in a call to \code{\link[=set.seed]{set.seed()}} before simulating the coefficients.}
+\item{seed}{Either \code{NULL} or an integer that will be used in a call to \code{\link[=set.seed]{set.seed()}} before simulating the coefficients.}
 
-\item{complete}{If FALSE, doesn't return inference for undetermined coefficients in case of an over-determined model.}
+\item{complete}{If \code{FALSE}, it does not return inference for undetermined coefficients in case of an over-determined model.}
 
 \item{constrained}{A logical switch indicating whether to simulate from the constrained (the default) or unconstrained (see \link[=uncons]{uncons}) coefficients distribution. When set to \code{FALSE} in \code{vcov}, returns the untruncated covariance matrix as in an unconstrained GLM.}
 
-\item{parm}{A specification of which parameters to compute the confidence intervals for. Either a vector of numbers or a vector of names. If missing, all parameters are considered.}
+\item{parm}{A specification of which parameters to compute the confidence intervals for. Either a vector of index numbers or a vector of names. If missing, all parameters are considered.}
 
 \item{level}{The confidence level required.}
 
-\item{...}{Further arguments passed to or from other methods. For \code{vcov} and \code{confint} can be used to provide a \code{seed} for the internal coefficient simulation.}
+\item{...}{Further arguments passed to or from other methods. For \code{vcov} and \code{confint}, it can be used to provide a \code{seed} for the internal coefficient simulation.}
 }
 \value{
 For \code{simulCoef}, a matrix with \code{nsim} rows containing simulated coefficients.
@@ -40,7 +40,7 @@ For \code{confint}, a two-column matrix with columns giving lower and upper conf
 For \code{vcov}, a matrix of the estimated covariances between the parameter estimates of the model.
 }
 \description{
-Simulates coefficients for a fitted \code{cirls} object and uses these simulations for inference. \code{confint} and \code{vcov} directly compute confidence intervals and the Variance-Covariance matrix for coefficients from a fitted \code{cirls} object. These methods supersede the default methods for \code{cirls} objects.
+\code{simulCoef} simulates coefficients for a fitted \code{cirls} object and uses these simulations for inference. \code{confint} and \code{vcov} directly compute confidence intervals and the variance-covariance matrix for coefficients from a fitted \code{cirls} object. These methods for \code{cirls} objects supersede the default \code{glm} methods.
 }
 \details{
 \subsection{Coefficient inference}{
@@ -50,7 +50,7 @@ To perform inference for coefficients the \code{simulCoef} function simulates fr
 
 \subsection{Functions}{
 
-\code{simulCoef} is the workhorse of the inference and is called internally by \code{confint} and \code{vcov}. They are custom methods for \link[=cirls.fit]{cirls} objects to supersede the default methods used for \link[stats:glm]{glm} objects. \code{simulCoef} doesn't need to be used directly for confidence intervals and variance-covariance matrices, but it can be used to check other summaries of the coefficients distribution.
+\code{simulCoef} is the workhorse of the inference and is called internally by \code{confint} and \code{vcov}. All of these are custom methods for \link[=cirls.fit]{cirls} objects that supersede the default methods used for \link[stats:glm]{glm} objects. \code{simulCoef} does not need to be used directly for confidence intervals and variance-covariance matrices, but it can be used to check other summaries of the coefficients distribution.
 }
 }
 \note{
@@ -83,7 +83,7 @@ edf(model)
 
 ### Compare with an unconstrained model
 
-# Refit the model
+# Refit the model without constraints
 umodel <- uncons(model)
 
 # Add result

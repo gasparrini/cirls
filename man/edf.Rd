@@ -7,7 +7,7 @@
 edf(object, nsim = 10000, seed = NULL)
 }
 \arguments{
-\item{object}{A \code{cirls} object or any object inheriting from \code{lm}, see details.}
+\item{object}{A \code{cirls} object or any object inheriting from \code{lm}. See details.}
 
 \item{nsim}{The number of simulations.}
 
@@ -17,22 +17,22 @@ edf(object, nsim = 10000, seed = NULL)
 A vector of length three containing the three types of degrees of freedom:
 \item{udf}{The \emph{unconstrained} degrees of freedom, i.e. the rank plus any dispersion parameter for \code{glm} objects.}
 \item{odf}{The \emph{observed} degrees of freedom, that is \code{udf} minus the number of active constraints.}
-\item{edf}{The \emph{expected} degrees of freedom estimated by simulation as described in the details section.}
+\item{edf}{The \emph{expected} degrees of freedom estimated by simulation, as described in the Details section.}
 For \code{cirls} objects, the vector includes the simulated distribution of the number of active constraints as an \code{actfreq} attribute.
 }
 \description{
-Estimate expected degrees of freedom of a \link[=cirls.fit]{cirls} object through simulations.
+Estimates expected degrees of freedom (df) of a \link[=cirls.fit]{cirls} object through simulations.
 }
 \details{
-Computes \strong{unconstrained}, \strong{observed} and \strong{expected} degrees of freedom for \code{cirls} objects. The function also works for most objects inheriting from \code{lm} although in this case only the unconstrained (\code{udf}) makes sense.
+Computes \strong{unconstrained}, \strong{observed}, and \strong{expected} df for \code{cirls} objects. The function also works for most objects inheriting from \code{lm} although, in this case, only the unconstrained (\code{udf}) part makes sense.
 \subsection{Unconstrained df}{
 
-\strong{Unconstrained} degrees of freedom (\code{udf}) refer to the usual degrees of freedom, i.e. the number of estimated parameters \eqn{p}. In GLMs, this corresponds to the number of coefficients, plus one degree of freedom for the dispersion parameter when relevant.
+\strong{Unconstrained} degrees of freedom (\code{udf}) refer to the usual degrees of freedom, i.e. the number of estimated parameters \eqn{p}. In GLMs, this corresponds to the number of coefficients, plus one degree of freedom for the dispersion parameter, when relevant.
 }
 
 \subsection{Observed df}{
 
-\strong{Observed} degrees of freedom (\code{odf}) correspond to the constrained df of a fitted \code{cirls} model. This corresponds to \eqn{p-m_a}, where \eqn{m_a} is \emph{the number of active constraint} in the fitted \code{cirls} model. Intuitively, the more restricted the final fit, the more degrees of freedom are decreased.
+\strong{Observed} degrees of freedom (\code{odf}) correspond to the constrained df of a fitted \code{cirls} model. This corresponds to \eqn{p-m_a}, where \eqn{m_a} is \emph{the number of active constraint} in the fitted \code{cirls} model. Intuitively, the more restricted the final fit, the more df are decreased.
 }
 
 \subsection{Expected df}{
@@ -67,7 +67,7 @@ edf(model)
 
 ### Compare with an unconstrained model
 
-# Refit the model
+# Refit the model without constraints
 umodel <- uncons(model)
 
 # Add result
