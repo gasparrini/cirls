@@ -18,7 +18,7 @@
 #' @details Does the heavy lifting in [shapeConstr][shapeConstr()] to create a constraint matrix for shape-constrained B-splines. Only useful for advanced users to create constraint matrices without passing an object to one of the [shapeConstr][shapeConstr()] methods.
 #'
 #' @note
-#' `dmat` doesn't perform any checks of the parameters so use carefully. In normal usage, checks are done by [shapeConstr][shapeConstr()] methods.
+#' `dmat` does not perform any checks of the parameters, so use it carefully. In normal usage, checks are done by [shapeConstr][shapeConstr()] methods.
 #'
 #' @returns A matrix of weighted differences that can be used to constrain B-spline bases.
 #'

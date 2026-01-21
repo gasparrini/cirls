@@ -7,22 +7,22 @@
 #' Expected degrees of freedom
 #'
 #' @description
-#' Estimate expected degrees of freedom of a [cirls][cirls.fit()] object through simulations.
+#' Estimates expected degrees of freedom (df) of a [cirls][cirls.fit()] object through simulations.
 #'
-#' @param object A `cirls` object or any object inheriting from `lm`, see details.
+#' @param object A `cirls` object or any object inheriting from `lm`. See details.
 #' @param nsim The number of simulations.
 #' @param seed An optional seed for the random number generator. See [set.seed][set.seed()].
 #'
 #' @details
-#' Computes **unconstrained**, **observed** and **expected** degrees of freedom for `cirls` objects. The function also works for most objects inheriting from `lm` although in this case only the unconstrained (`udf`) makes sense.
+#' Computes **unconstrained**, **observed**, and **expected** df for `cirls` objects. The function also works for most objects inheriting from `lm` although, in this case, only the unconstrained (`udf`) part makes sense.
 #'
 #' ## Unconstrained df
 #'
-#' **Unconstrained** degrees of freedom (`udf`) refer to the usual degrees of freedom, i.e. the number of estimated parameters \eqn{p}. In GLMs, this corresponds to the number of coefficients, plus one degree of freedom for the dispersion parameter when relevant.
+#' **Unconstrained** degrees of freedom (`udf`) refer to the usual degrees of freedom, i.e. the number of estimated parameters \eqn{p}. In GLMs, this corresponds to the number of coefficients, plus one degree of freedom for the dispersion parameter, when relevant.
 #'
 #' ## Observed df
 #'
-#' **Observed** degrees of freedom (`odf`) correspond to the constrained df of a fitted `cirls` model. This corresponds to \eqn{p-m_a}, where \eqn{m_a} is *the number of active constraint* in the fitted `cirls` model. Intuitively, the more restricted the final fit, the more degrees of freedom are decreased.
+#' **Observed** degrees of freedom (`odf`) correspond to the constrained df of a fitted `cirls` model. This corresponds to \eqn{p-m_a}, where \eqn{m_a} is *the number of active constraint* in the fitted `cirls` model. Intuitively, the more restricted the final fit, the more df are decreased.
 #'
 #' ## Expected df
 #'
@@ -31,7 +31,7 @@
 #' @returns A vector of length three containing the three types of degrees of freedom:
 #' \item{udf}{The *unconstrained* degrees of freedom, i.e. the rank plus any dispersion parameter for `glm` objects.}
 #' \item{odf}{The *observed* degrees of freedom, that is `udf` minus the number of active constraints.}
-#' \item{edf}{The *expected* degrees of freedom estimated by simulation as described in the details section.}
+#' \item{edf}{The *expected* degrees of freedom estimated by simulation, as described in the Details section.}
 #' For `cirls` objects, the vector includes the simulated distribution of the number of active constraints as an `actfreq` attribute.
 #'
 #' @seealso [logLik.cirls][logLik.cirls()] which internally calls `edf` to compute degrees of freedom. [simulCoef][simulCoef()] for coefficient simulation.

@@ -3,10 +3,12 @@
 
 library(splines)
 
-### Association between Ozone and mortality
-# Nonnegative constraint on Ozone
-model <- glm(death ~ o3, data = london, family = "quasipoisson",
-  method = "cirls.fit", cons = ~ shape(o3, "pos"))
+### Association between CO and mortality
+# Model includes spline of date and day-of-week
+# Nonnegative constraint on CO
+model <- glm(death ~ co + weekdays(date) + ns(date, df = 7*8),
+  data = london, family = "quasipoisson",
+  method = "cirls.fit", cons = ~ shape(co, "pos"))
 
 # Coefficient and confidence interval
 coef(model)[2]
