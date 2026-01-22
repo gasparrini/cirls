@@ -6,7 +6,7 @@
 #' @param object A `cirls` object.
 #'
 #' @details
-#' This function refits a `cirls` object, removing all constraints. This is primarly used by [simulCoef][simulCoef()] for inference, but it can also be used to easily compare a constrained and an unconstrained model.
+#' This function refits the original model that produced a `cirls` object, but removing all constraints. This is primarly used by [simulCoef][simulCoef()] for inference, but it can also be used to easily compare a constrained and an unconstrained models.
 #'
 #' The function still fits the model through [cirls.fit][cirls.fit()], but using an empty constraint matrix. Therefore, it returns a `cirls` object that can use all the facilities provided by the `cirls` package. In this instance, the CIRLS algorithm reduces to a classical IRLS and the results are identical to a usual [glm][glm()] fitted with `glm.fit`.
 #'

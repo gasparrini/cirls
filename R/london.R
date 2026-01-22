@@ -3,16 +3,16 @@
 
 #' Daily mortality, temperature and pollution data in London
 #'
-#' This dataset contains daily time series of all-cause mortality for several age groups, temperature (maximum, mean and minimum) and air pollutants (PM10, ozone and carbon monoxide) for the period of 1996-2003.
+#' This dataset contains daily time series of all-cause mortality for several age groups, temperature (maximum, mean, and minimum), and air pollutants (PM10, ozone, and carbon monoxide) for the period of 1996-2003.
 #'
 #' @format A data frame with 2922 observations and 12 variables:
 #' \describe{
-#'  \item{date}{`Date` variable}
-#'  \item{death}{Counts of all cause and all-age mortality}
+#'  \item{date}{Date in the period 1996-2003}
+#'  \item{death}{Counts of all-cause and all-age mortality}
 #'  \item{age0_64}{Counts of mortality for age group 0-64}
 #'  \item{age65_74}{Counts of mortality for age group 65-74}
 #'  \item{age75_84}{Counts of mortality for age group 75-84}
-#'  \item{age85plus}{Counts of mortality for age group 85+}
+#'  \item{age85plus}{Counts of mortality for age group 85 and older}
 #'  \item{tmax}{Daily maximum temperature (in Celsius degree)}
 #'  \item{tmean}{Daily mean temperature (in Celsius degree)}
 #'  \item{tmin}{Daily minimum temperature (in Celsius degree)}
@@ -22,9 +22,7 @@
 #' }
 #'
 #' @source
-#' Office for National Statistics
-#'
-#' British Atmospheric Data Centre
+#' Mortality data were provided by the Office for National Statistics (ONS). Environmental data were collected and provided by the British Atmospheric Data Centre (BADC).
 #'
 #' @example inst/examples/ex_london_nonneg.R
 #'
