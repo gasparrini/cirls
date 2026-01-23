@@ -3,13 +3,13 @@
 
 #' Global temperature anomaly
 #'
-#' Provides annual global temperature anomaly compared to the reference period 1961-1990 from 1850 to 2015
+#' Provides annual global temperature anomaly compared to the reference period 1961-1990 from 1850 to 2015.
 #'
 #' @format
-#' A data frame of 166 observations (years) and two? variables:
+#' A data frame of 166 observations (years) and three variables:
 #' \describe{
-#'  \item{year}{The year.}
-#'  \item{decade}{The year rounded down to to the decade.}
+#'  \item{year}{The calendar year.}
+#'  \item{decade}{The related decade.}
 #'  \item{anomaly}{The difference between the global annual temperature and the average over 1961-1990.}
 #' }
 #'

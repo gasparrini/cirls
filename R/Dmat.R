@@ -8,7 +8,7 @@
 #' Spline derivative matrix
 #'
 #' @description
-#' Computes a derivative matrix for B-splines that can then be used for shape-constraints. It is internally called by [shapeConstr][shapeConstr()] and should not be used directly.
+#' Computes a derivative matrix for B-splines, used for shape-constraints. It is internally called by [shapeConstr][shapeConstr()] and not meant to be used directly.
 #'
 #' @param d Non-negative integer giving the order of derivation. Should be between 0 and `ord - 2`.
 #' @param s Sign of the derivative.
