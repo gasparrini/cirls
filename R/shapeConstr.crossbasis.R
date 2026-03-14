@@ -9,7 +9,7 @@
 # Needs to work both for lags bs and ns
 
 shapeConstr.crossbasis <- function(x, varshape, lagshape,
-  overall = TRUE)
+  overall = FALSE)
 {
 
   #----- Initial checks
@@ -32,7 +32,7 @@ shapeConstr.crossbasis <- function(x, varshape, lagshape,
   lagvec <- seq(lags[1], lags[2], by = 1)
   lagbasis <- do.call(dlnm::onebasis, c(list(x = lagvec), attr(x, "arglag")))
 
-  #----- Create constraints
+  #----- Create marginal constraint matrices
 
   # In var dimension
   Cvar <- shapeConstr(varbasis, shape = varshape)
@@ -40,8 +40,20 @@ shapeConstr.crossbasis <- function(x, varshape, lagshape,
   # In lag dimension
   Clag <- shapeConstr(lagbasis, shape = lagshape)
 
-  # Put together
-  cmlist <- Map("%x%", Cvar, Clag)
+  #----- Final constraint matrix
+
+  # Constrain overall only
+  if (isTRUE(overall)){
+
+    # This is the same M matrix as in Gasparrini Armstrong 2013
+    M <- diag(attr(x, "df")[1]) %x% t(colSums(lagbasis))
+    ovCmat <- Cvar$Cmat %*% M
+    cmlist <- utils::modifyList(Cvar, list(Cmat = ovCmat))
+
+  } else {
+    # Or the whole surface: a simple kronecker product
+    cmlist <- Map("%x%", Cvar, Clag)
+  }
 
   #----- Return
   cmlist
