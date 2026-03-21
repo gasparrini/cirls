@@ -105,3 +105,10 @@ for (vf in funlist) for (lf in funlist) for (shp in c("inc", "dec")){
 
 })
 
+#-----------------------------
+# test slices
+#-----------------------------
+
+cb <- crossbasis(X, lag = maxlag, argvar = list(fun = "bs", df = 10),
+    arglag = list(fun = "ns", df = 5))
+Cmat <- shapeConstr.crossbasis(cb, vshape = "inc", lrange = c(0, 5))

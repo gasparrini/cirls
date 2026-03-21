@@ -7,28 +7,21 @@
 
 #' @rdname shapeConstr
 #' @export
-shapeConstr.factor <- function(x, shape, intercept = FALSE, ...) {
+shapeConstr.factor <- function(x, shape, range = NULL, intercept = FALSE, ...) {
 
-  # Levels
-  ord <- nlevels(x)
+  # Get the design matrix
+  xmat <- model.matrix(~ x)
 
-  # Check parameters
-  cpars <- chkshp(shape, ord)
+  # Get initial constraint matrix from default methods
+  Cmat <- shapeConstr.default(xmat, shape = shape, range = range,
+    intercept = TRUE)$Cmat
 
-  # Create constraint matrices
-  knots <- seq_len(2 * ord)
-  Cmat <- lapply(cpars, function(cp) dmat(cp[1], cp[2], knots, ord))
-  Cmat <- do.call(rbind, Cmat)
-
-  # Check if the "intercept" is not included, contrasts are applied
+  # Apply contrast if intercept is not included
   # NB: no contrast is applied in R when the model does not include an intercept
   if (isFALSE(intercept)){
     ctr <- stats::contrasts(x)
     Cmat <- Cmat %*% ctr
   }
-
-  # Remove redundant constraints
-  Cmat <- Cmat[!checkCmat(Cmat, warn = FALSE)$redundant,, drop = FALSE]
 
   # Bounds
   lb <- rep(0, NROW(Cmat))

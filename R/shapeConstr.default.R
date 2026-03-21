@@ -1,34 +1,42 @@
 ################################################################################
 #
 # Shape constraint matrix method:
-# Default method
+# Default method for a general matrix
 #
 ################################################################################
 
 #' @rdname shapeConstr
 #' @export
-shapeConstr.default <- function(x, shape, intercept = FALSE, ...) {
+shapeConstr.default <- function(x, shape, range = NULL, intercept = FALSE, ...) {
 
-  # Matrix dimension
-  if (length(dim(x)) < 2) x <- as.matrix(x)
-  ord <- ncol(x) + !intercept
+  #----- Parameters
 
-  # Check parameters
-  cpars <- chkshp(shape, ord)
+  # Matrix dimension and check
+  df <- ncol(x) + !intercept
+  cpars <- chkshp(shape, df)
+
+  # Check range parameter
+  rng <- chkrng(range, 1:df, msg = FALSE)
+
+  #----- Create matrix
 
   # Create constraint matrices
-  knots <- seq_len(2 * ord)
-  Cmat <- lapply(cpars, function(cp) dmat(cp[1], cp[2], knots, ord))
+  Cmat <- lapply(cpars, function(cp) cp[2] * diff(diag(df), diff = cp[1]))
+
+  # Put together
   Cmat <- do.call(rbind, Cmat)
 
-  # Put together and remove redundant constraints
-  if (!intercept) Cmat <- Cmat[, -1, drop = FALSE]
-  Cmat <- Cmat[!checkCmat(Cmat, warn = FALSE)$redundant,, drop = FALSE]
+  # Remove intercept if not included
+  if (!intercept) Cmat <- Cmat[,-1, drop = F]
 
-  # Bounds
-  lb <- rep(0, NROW(Cmat))
-  ub <- rep(Inf, NROW(Cmat))
+  # Keep only desired range
+  rind <- (1:ncol(Cmat)) >= rng[1] & (1:ncol(Cmat)) <= rng[2]
+  keep <- apply(Cmat, 1, function(r) all(r[!rind] == 0))
+  Cmat <- Cmat[keep,, drop = FALSE]
+
+  # Add bounds attributes
+  clist <- list(Cmat = Cmat, lb = rep(0, NROW(Cmat)), ub = rep(Inf, NROW(Cmat)))
 
   # Return
-  list(Cmat = Cmat, lb = lb, ub = ub)
+  clist
 }

@@ -61,4 +61,4 @@
 #' @example inst/examples/ex_warming_splines.R
 #'
 #' @export
-shapeConstr <- function(x, shape, ...) UseMethod("shapeConstr")
+shapeConstr <- function(x, ...) UseMethod("shapeConstr")
