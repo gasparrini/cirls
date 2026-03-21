@@ -49,22 +49,18 @@ test_that("monotone-constr dlnm works", {
 funlist <- c("strata", "bs", "ns")
 
 # Loop over the types
-for (vf in funlist) for (lf in funlist) for (shp in c("inc", "dec")){
+for (vf in funlist) for (lf in funlist){
   # Define crossbasis
   cb <- crossbasis(X, lag = maxlag, argvar = list(fun = vf, df = 10),
     arglag = list(fun = lf, df = 5))
 
   # Constraint matrix and fit model
-  Cmat <- shapeConstr.crossbasis(cb, varshape = shp)
   cmodel <- glm(y ~ cb, family = "quasipoisson",
-    method = "cirls.fit", Cmat = list(cb = Cmat$Cmat))
+    method = "cirls.fit", constr = ~ shape(cb, vshape = "inc"))
 
   # Prediction - each column (lag) should be non-decreasing
   ccp <- crosspred(cb, cmodel)
-  if (shp == "inc") expect_true(
-    all(diff(ccp$matfit) >= -sqrt(.Machine$double.eps)))
-  if (shp == "dec") expect_true(
-    all(diff(ccp$matfit) <= sqrt(.Machine$double.eps)))
+  expect_true(all(diff(ccp$matfit) >= -sqrt(.Machine$double.eps)))
 }
 
 })
@@ -81,22 +77,18 @@ test_that("overall constraining works", {
 funlist <- c("strata", "bs", "ns")
 
 # Loop over the types
-for (vf in funlist) for (lf in funlist) for (shp in c("inc", "dec")){
+for (vf in funlist) for (lf in funlist){
   # Define crossbasis
   cb <- crossbasis(X, lag = maxlag, argvar = list(fun = vf, df = 10),
     arglag = list(fun = lf, df = 5))
 
   # Constraint matrix and fit model
-  Cmat <- shapeConstr.crossbasis(cb, varshape = shp, overall = TRUE)
   cmodel <- glm(y ~ cb, family = "quasipoisson",
-    method = "cirls.fit", Cmat = list(cb = Cmat$Cmat))
+    method = "cirls.fit", constr = ~ shape(cb, vshape = "inc", overall = TRUE))
 
   # Prediction - each column (lag) should be non-decreasing
   ccp <- crosspred(cb, cmodel)
-  if (shp == "inc") expect_true(
-    all(diff(ccp$allfit) >= -sqrt(.Machine$double.eps)))
-  if (shp == "dec") expect_true(
-    all(diff(ccp$allfit) <= sqrt(.Machine$double.eps)))
+  expect_true(all(diff(ccp$allfit) >= -sqrt(.Machine$double.eps)))
 
   # Plot
   # plot(ccp, ptype = "overall")
@@ -109,6 +101,30 @@ for (vf in funlist) for (lf in funlist) for (shp in c("inc", "dec")){
 # test slices
 #-----------------------------
 
-cb <- crossbasis(X, lag = maxlag, argvar = list(fun = "bs", df = 10),
-    arglag = list(fun = "ns", df = 5))
-Cmat <- shapeConstr.crossbasis(cb, vshape = "inc", lrange = c(0, 5))
+test_that("slicing works", {
+
+# List of type of basis functions
+funlist <- c("strata", "bs", "ns")
+
+# Loop over the types
+for (vf in funlist) for (lf in funlist){
+  # Define crossbasis
+  cb <- crossbasis(X, lag = maxlag, argvar = list(fun = vf, df = 10),
+    arglag = list(fun = lf, df = 5))
+
+  # Constraint matrix and fit model
+  cmodel <- glm(y ~ cb, family = "quasipoisson", method = "cirls.fit",
+    constr = ~ shape(cb, vshape = "inc", lrange = c(0, 5)))
+
+  # Prediction - each column (lag) should be non-decreasing
+  ccp <- crosspred(cb, cmodel)
+  expect_true(all(diff(ccp$matfit[,1]) >= -sqrt(.Machine$double.eps)))
+  expect_true(all(diff(ccp$matfit[,5]) >= -sqrt(.Machine$double.eps)))
+  # expect_false(all(diff(ccp$matfit[,15]) >= -sqrt(.Machine$double.eps)))
+
+  # Plot
+  # plot(ccp, ptype = "overall")
+  # plot(ccp, ptype = "slices", lag = 0)
+}
+
+})

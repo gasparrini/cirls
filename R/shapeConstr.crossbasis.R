@@ -22,8 +22,8 @@ shapeConstr.crossbasis <- function(x, vshape, lshape,
 
   # If any of the shape arguments are missing, use "pos"
   # Allows having the specificity of each basis
-  if(missing(varshape)) vshape <- "pos"
-  if(missing(lagshape)) lshape <- "pos"
+  if(missing(vshape)) vshape <- "pos"
+  if(missing(lshape)) lshape <- "pos"
 
   # Check range and lag to be constrained
   vrange <- chkrng(vrange, xrng)
@@ -43,10 +43,10 @@ shapeConstr.crossbasis <- function(x, vshape, lshape,
   #----- Create marginal constraint matrices
 
   # In var dimension
-  Cvar <- shapeConstr(varbasis, shape = vshape)
+  Cvar <- shapeConstr(varbasis, shape = vshape, range = vrange)
 
   # In lag dimension
-  Clag <- shapeConstr(lagbasis, shape = lshape)
+  Clag <- shapeConstr(lagbasis, shape = lshape, range = lrange)
 
   #----- Final constraint matrix
 

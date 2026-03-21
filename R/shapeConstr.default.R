@@ -21,7 +21,11 @@ shapeConstr.default <- function(x, shape, range = NULL, intercept = FALSE, ...) 
   #----- Create matrix
 
   # Create constraint matrices
-  Cmat <- lapply(cpars, function(cp) cp[2] * diff(diag(df), diff = cp[1]))
+  Cmat <- lapply(cpars, function(cp){
+    m <- diag(df)
+    if (cp[1] > 0) m <- diff(m, diff = cp[1])
+    cp[2] * m
+  })
 
   # Put together
   Cmat <- do.call(rbind, Cmat)
