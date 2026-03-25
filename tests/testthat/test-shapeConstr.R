@@ -174,7 +174,7 @@ X <- ns(x1, knots = ks)
 
 # Fit
 Cmat <- shapeConstr(X, shape = c("dec", "ccv"))
-m <- glm(y ~ X, method = cirls.fit, Cmat = list(X=Cmat$Cmat),
+m <- glm(y ~ X, method = cirls.fit, Cmat = list(X = Cmat$Cmat),
   lb = list(X = Cmat$lb), ub = list(X = Cmat$ub))
 pred <- predict(m)
 

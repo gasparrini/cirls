@@ -29,7 +29,7 @@ mkShpCmat <- function(shape, knots, ord, intercept,
   if (!intercept) Cmat <- Cmat[,-1, drop = F]
 
   # Remove redundant constraints
-  Cmat <- checkCmat(Cmat, reduce = TRUE)$Cmat
+  Cmat <- checkCmat(Cmat, reduce = TRUE, warn = FALSE)$Cmat
 
   #----- Return
 

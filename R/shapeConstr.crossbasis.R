@@ -8,8 +8,9 @@
 # Plans to add the possibility to constrain at a given lag or a given at for lags
 # Needs to work both for lags bs and ns
 
+#' @exportS3Method
 shapeConstr.crossbasis <- function(x, vshape, lshape,
-  overall = FALSE, vrange = NULL, lrange = NULL)
+  overall = FALSE, vrange = NULL, lrange = NULL, ...)
 {
   # Extract info on crossbasis
   cbattr <- attributes(x)

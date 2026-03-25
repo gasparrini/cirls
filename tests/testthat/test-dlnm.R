@@ -20,6 +20,7 @@ fpara <- function(x) -.5 * sin(x * pi)
 
 # Lag dimension
 wdecay <- function(lag) exp(-lag/5)
+wpeak <- function(lag) 5 * dnorm(lag, 5, 5)
 
 # Full surface
 fsurf <- function(x,lag) 0.1 * fpara(x) * wdecay(lag)
@@ -59,7 +60,7 @@ for (vf in funlist) for (lf in funlist){
     method = "cirls.fit", constr = ~ shape(cb, vshape = "inc"))
 
   # Prediction - each column (lag) should be non-decreasing
-  ccp <- crosspred(cb, cmodel)
+  ccp <- crosspred(cb, cmodel, cen = .5)
   expect_true(all(diff(ccp$matfit) >= -sqrt(.Machine$double.eps)))
 }
 
@@ -87,7 +88,7 @@ for (vf in funlist) for (lf in funlist){
     method = "cirls.fit", constr = ~ shape(cb, vshape = "inc", overall = TRUE))
 
   # Prediction - each column (lag) should be non-decreasing
-  ccp <- crosspred(cb, cmodel)
+  ccp <- crosspred(cb, cmodel, cen = .5)
   expect_true(all(diff(ccp$allfit) >= -sqrt(.Machine$double.eps)))
 
   # Plot
@@ -117,7 +118,7 @@ for (vf in funlist) for (lf in funlist){
     constr = ~ shape(cb, vshape = "inc", lrange = c(0, 5)))
 
   # Prediction - each column (lag) should be non-decreasing
-  ccp <- crosspred(cb, cmodel)
+  ccp <- crosspred(cb, cmodel, cen = .5)
   expect_true(all(diff(ccp$matfit[,1]) >= -sqrt(.Machine$double.eps)))
   expect_true(all(diff(ccp$matfit[,5]) >= -sqrt(.Machine$double.eps)))
   # expect_false(all(diff(ccp$matfit[,15]) >= -sqrt(.Machine$double.eps)))
@@ -128,3 +129,39 @@ for (vf in funlist) for (lf in funlist){
 }
 
 })
+
+################################################################################
+# DLM test
+
+#--------------------------
+# Resimulate data
+#--------------------------
+
+# Create cumulative effect
+cumeff2 <- Q %*% (wpeak(0:maxlag) / 5)
+
+# Simulate response
+set.seed(24)
+suppressWarnings(y <- rpois(length(X), exp((log(20) + cumeff2))))
+
+#----- Unconstrained DLM
+
+# Basis
+dlb <- crossbasis(X, lag = maxlag, argvar = list(fun = "lin"),
+    arglag = list(fun = "strata", df = 5))
+
+# Fit model
+udlm <- glm(y ~ dlb, family = "quasipoisson")
+
+# Look at it
+crosspred(dlb, udlm, cen = .5) |> plot(ptype = "slices", var = 1)
+
+
+#----- Constrained DLM
+
+# Fit model
+cdlm <- glm(y ~ dlb, family = "quasipoisson",
+    method = "cirls.fit", constr = ~ shape(dlb, lshape = "dec"))
+
+# Look at it
+crosspred(dlb, cdlm, cen = .5) |> plot(ptype = "slices", var = 1)

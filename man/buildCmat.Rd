@@ -14,9 +14,9 @@ buildCmat(mf, assign = NULL, constr = NULL, Cmat = NULL, lb = NULL,
 
 \item{constr}{A formula specifying constraints.}
 
-\item{Cmat}{Either a matrix or a named list of constraint matrices. In the latter case, names should correspond to terms in \code{mf} (dee setails).}
+\item{Cmat}{Either a matrix or a named list of constraint matrices. In the latter case, names should correspond to terms in \code{mf} (See details).}
 
-\item{lb, ub}{Vector or named list of vectors containing constraint bounds. In the latter case, names should correspond to terms in \code{mf} (dee setails).}
+\item{lb, ub}{Vector or named list of vectors containing constraint bounds. In the latter case, names should correspond to terms in \code{mf} (See details).}
 }
 \value{
 A list with elements \code{Cmat}, \code{lb}, and \code{ub} containing the fully specified constraint matrix, lower and upper bounds for the model specified in argument \code{mf}. \code{Cmat} additionally includes an attribute called \code{terms} that maps constraints represented in the matrix to individual terms in the model.
