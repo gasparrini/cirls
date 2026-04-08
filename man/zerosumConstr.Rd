@@ -9,19 +9,19 @@ zerosumConstr(..., group = FALSE)
 \arguments{
 \item{...}{Terms to be included in the constraint.}
 
-\item{group}{If set to TRUE, the constraint is build independently for each variable in \code{...}}
+\item{group}{If set to \code{TRUE}, the constraint is build independently for each variable in \code{...}}
 }
 \value{
-A list containing the constraint matrix \code{Cmat}, and lower/upper bound vectors (\code{lb} and \code{ub} respectively).
+A list containing the constraint matrix \code{Cmat}, and lower/upper bound vectors (\code{lb} and \code{ub}, respectively).
 }
 \description{
-Builds a constraint matrix and bound vectors for zero-sum constraints on a set of coefficients. This is a generic function designed to be used in the \link[=buildCmat]{constr} interface.
+Builds a constraint matrix and bound vectors for defining zero-sum constraints on a set of coefficients. This is a generic function designed to be used in the \link[=buildCmat]{constr} formula interface.
 }
 \details{
 This function is used to force one or several set(s) of coefficients to sum to zero. The main use is for when (log) compositions are used as predictors in the model, but it can also be used more generally for variables that are relative to a reference.
 \subsection{Usage}{
 
-The recommended usage is to use this function through a call to \code{zerosum} on a term in the \link[=buildCmat]{constr} interface. This method is then called internally to create the constraint matrix and bound vectors. However, \code{shapeConstr} can also be called directly on a matrix-like object to manually build or inspect the constraint matrix.
+The recommended usage is to use this function through a call to \code{zerosum} on a term in the \link[=buildCmat]{constr} formula interface. This method is then called internally to create the constraint matrix and bound vectors. However, \code{zerosumConstr} can also be called directly on a matrix-like object to manually build or inspect the constraint matrix.
 }
 }
 \examples{

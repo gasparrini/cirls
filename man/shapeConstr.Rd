@@ -14,25 +14,25 @@ shapeConstr(x, shape, ...)
 \method{shapeConstr}{factor}(x, shape, intercept = FALSE, ...)
 }
 \arguments{
-\item{x}{An object representing a design matrix of predictor variables, typically basis functions. See details for supported objects.}
+\item{x}{An object representing a design matrix of predictor variables, typically basis functions. See Details for supported objects.}
 
-\item{shape}{A character vector indicating one or several shape-constraints. See details for supported shapes.}
+\item{shape}{A character vector indicating one or several shape-constraints. See Details for supported shapes.}
 
 \item{...}{Additional parameters passed to or from other methods.}
 
-\item{intercept}{For the default method, a logical value indicating if the design matrix includes an intercept. In most cases, it will be automatically extracted from \code{x} but this can be used to override it.}
+\item{intercept}{For the default method, a logical value indicating if the design matrix includes an intercept. In most cases, it will be automatically extracted from \code{x}, but this argument can be used to override it.}
 }
 \value{
-A list containing the constraint matrix \code{Cmat}, and lower/upper bound vectors (\code{lb} and \code{ub} respectively).
+A list containing the constraint matrix \code{Cmat}, and lower/upper bound vectors (\code{lb} and \code{ub}, respectively).
 }
 \description{
-Builds a constraint matrix and bound coefficients for shape-constraints on a set of coefficients. This is a generic function designed to be used in the \link[=buildCmat]{constr} interface. It allows methods for a wide range of regression terms (see details).
+Builds a constraint matrix and bound vectors for defining shape constraints on a set of coefficients. This is a generic function designed to be used in the \link[=buildCmat]{constr} formula interface. It allows methods for a wide range of regression terms (see Details).
 }
 \details{
-This function is used to specify shape constraints on terms in a \code{cirls} model. Shapes can refer to the relation between the coefficients of several variables in a matrix (for instance dummy variables to impose shapes on the levels of a factor), or to the shape of a smooth term (such as splines). note that this function can also be used to easily specify non-negativity or non-positivity constraints. See below for the list of implemented shapes and the examples section for several use cases.
+This function is used to specify shape constraints on terms in a \code{cirls} model. Shapes can be enforced through the relation between the coefficients of several variables, for instance dummy indicators to impose shapes on the levels of a factor, or splines for smooth shapes. Note that this function can also be used to easily specify non-negativity or non-positivity constraints. See below for the list of implemented shapes and the examples section for several use cases.
 \subsection{Usage}{
 
-The recommended usage is to use this function through a call to \code{shape} on a term in the \link[=buildCmat]{constr} interface. This method is then called internally to create the constraint matrix and bound vectors. However, \code{shapeConstr} can also be called directly on a matrix-like object to manually build or inspect the constraint matrix.
+The recommended usage is to use this function through a call to \code{shape} on a term in the \link[=buildCmat]{constr} formula interface. This method is then called internally to create the constraint matrix and bound vectors. However, \code{shapeConstr} can also be called directly on a matrix-like object to manually build or inspect the constraint matrix.
 
 The parameters necessary to build the constraint matrix (e.g. \code{knots} and \code{ord} for splines) are typically extracted from the \code{x} object. This is also true for the \code{intercept} for most of the object, except for the default method for which it can be useful to explicitly provide it. In a typical usage in which \code{shapeConstr} is called from the \code{constr} argument, \code{intercept} is automatically determined from the \link[stats:glm]{glm} formula.
 }
@@ -49,10 +49,10 @@ The \code{shape} argument allows to define a specific shape for the association 
 
 \subsection{Available methods}{
 
-In addition to the default method, \code{shapeConstr} currently supports several objects, creating an appropriate shape-constraint matrix depending on the object. The full list can be obtained by \code{methods(shapeConstr)}.
+In addition to the default method, \code{shapeConstr} currently supports methods for several classes, creating an appropriate shape-constraint matrix depending on the object. The full list (also provided by \code{methods(shapeConstr)}):.
 \subsection{General}{
 \itemize{
-\item \code{\link[=factor]{factor()}}: for categorical variables. Extract the \link[stats:contrasts]{contrasts} to define the constraint matrix. Here the \code{intercept} argument has the same interpretation as in the default method, i.e. if set to \code{TRUE} it means the \code{glm} model doesn't include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
+\item \code{\link[=factor]{factor()}}: for categorical variables. Extract the \link[stats:contrasts]{contrasts} to define the constraint matrix. Here the \code{intercept} argument has the same interpretation as in the default method, i.e. if set to \code{TRUE} it means the \code{glm} model does not include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
 }
 }
 

@@ -19,7 +19,7 @@ dmat(d, s, knots, ord)
 A matrix of weighted differences that can be used to constrain B-spline bases.
 }
 \description{
-Computes a derivative matrix for B-splines that can then be used for shape-constraints. It is internally called by \link[=shapeConstr]{shapeConstr} and should not be used directly.
+Computes a derivative matrix for B-splines, used for shape-constraints. It is internally called by \link[=shapeConstr]{shapeConstr} and not meant to be used directly.
 }
 \details{
 Does the heavy lifting in \link[=shapeConstr]{shapeConstr} to create a constraint matrix for shape-constrained B-splines. Only useful for advanced users to create constraint matrices without passing an object to one of the \link[=shapeConstr]{shapeConstr} methods.
