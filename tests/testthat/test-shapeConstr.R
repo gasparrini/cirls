@@ -283,8 +283,8 @@ test_that("dlnm:::strata constraining works on london dataset", {
   cpred <- predict(cmodel, nd)
 
   # Plot
-  plot(gr, pred, type = "l")
-  lines(gr, cpred, col = 2)
+  # plot(gr, pred, type = "l")
+  # lines(gr, cpred, col = 2)
 
   # Formal test
   expect_gte(cpred[br[1] + 1], cpred[br[1] - 1])
@@ -326,4 +326,6 @@ test_that("dlnm:::strata constraining works on simulated dataset", {
   # Test results
   expect_true(all(diff(res2, diff = 2) >= -sqrt(.Machine$double.eps)))
 })
+
+
 

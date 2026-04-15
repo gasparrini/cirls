@@ -1,17 +1,27 @@
 ################################################################################
 #
-# Shape constraint matrix method:
+# Method to create a constraint matrix for constraint on the bound of smooths
 # ns method
 #
 ################################################################################
 
+# By default deg is set to the degree of the spline, for smoother convergence
+
+#' @rdname boundConstr
+#' @order 5
 #' @export
-shapeConstr.ns <- function(x, shape, ...){
+boundConstr.ns <- function(x, ...)
+{
 
-  # Create the B-spline constraint matrix
-  cm <- shapeConstr.bs(x, shape, ...)
+  attrs <- attributes(x)[c("degree", "knots", "Boundary.knots", "intercept")]
+  attrs$x <- seq(attrs$Boundary.knots[1], attrs$Boundary.knots[2],
+    length.out = 10)
+  xbs <- do.call(splines::bs, attrs)
 
-  # Adjust the boundary bases
+  # Constraint matrix
+  cm <- boundConstr(xbs, ...)
+
+  # Adjust the constraint matrix with ns bound conditions
   ord <- attr(x, "degree") + 1
   knots <- c(rep(attr(x, "Boundary.knots"), ord), attr(x, "knots"))
   knots <- sort(knots)
@@ -22,11 +32,12 @@ shapeConstr.ns <- function(x, shape, ...){
   Cmat <- as.matrix((t(qr.qty(qr.const, t(cm$Cmat))))[, -(1L:2L), drop = F])
 
   # Constraining of NS can create some redundant constraints
-  Cmat <- checkCmat(Cmat, reduce = TRUE, warn = FALSE)$Cmat
+  chk <- checkCmat(Cmat, reduce = TRUE, warn = FALSE)
+  Cmat <- chk$Cmat
 
   # Bounds
-  lb <- rep(0, NROW(Cmat))
-  ub <- rep(Inf, NROW(Cmat))
+  lb <- cm$lb[!chk$redundant]
+  ub <- cm$ub[!chk$redundant]
 
   # Return
   list(Cmat = Cmat, lb = lb, ub = ub)

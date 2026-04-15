@@ -40,6 +40,7 @@
 #' These constraints can be used in the `constr` formula as functions applied to specific terms:
 #' * [shape][shapeConstr()]: constraining the shape of an association. Typically used with spline bases or factors.
 #' * [zerosum][zerosumConstr()]: specify that a group of coefficients should sum to zero. Typically used for compositional regression.
+#' * [bound][boundConstr()]: boundary constraint for an association. Typically used with spline bases or factors.
 #'
 #' ## Methods specific to `cirls` objects
 #'

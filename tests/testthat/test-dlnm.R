@@ -149,6 +149,7 @@ suppressWarnings(y <- rpois(length(X), exp((log(20) + cumeff2))))
 # Basis
 dlb <- crossbasis(X, lag = maxlag, argvar = list(fun = "lin"),
     arglag = list(fun = "strata", df = 5))
+dlb <- crossbasis(X, lag = maxlag, arglag = list(fun = "strata", df = 5))
 
 # Fit model
 udlm <- glm(y ~ dlb, family = "quasipoisson")
@@ -164,4 +165,63 @@ cdlm <- glm(y ~ dlb, family = "quasipoisson",
     method = "cirls.fit", constr = ~ shape(dlb, lshape = "dec"))
 
 # Look at it
-crosspred(dlb, cdlm, cen = .5) |> plot(ptype = "slices", var = 1)
+crosspred(dlb, cdlm, cen = 1) |> plot(ptype = "slices", var = c(0, .5, 1))
+
+
+################################################################################
+# DLMN test lags
+
+#--------------------------
+# Resimulate data
+#--------------------------
+
+# Create cumulative effect
+fsurf3 <- function(x,lag) 0.1 * fpara(x) * wpeak(lag)
+cumeff3 <- apply(Q, 1, function(hist) sum(fsurf3(hist, seqlag)))
+
+# Simulate response
+set.seed(31)
+suppressWarnings(y3 <- rpois(length(X), exp((log(20) + cumeff3))))
+
+#--------------------------
+# Models
+#--------------------------
+
+# Crossbasis
+cb <- crossbasis(X, lag = maxlag, argvar = list(fun = "bs", df = 10),
+    arglag = list(fun = "bs", df = 5))
+
+# Unconstrained model for comparison
+um <- glm(y3 ~ cb, family = "poisson")
+ucp <- crosspred(cb, um)
+plot(ucp, ptype = "slice", var = c(0, .5))
+
+#----- Constrained model
+cmdec <- glm(y3 ~ cb, family = "quasipoisson", method = "cirls.fit",
+    constr = ~ shape(cb, vshape = "dec", lshape = "dec"))
+cp <- crosspred(cb, cmdec)
+plot(cp, ptype = "slice", lag = c(0, 5, 10, 21), ci = "n")
+plot(cp, ptype = "overall")
+# coefmat <- matrix(coef(cmdec)[-1], ncol = 10)
+
+
+#----- Try to create a constraint matrix
+rng <- range(X, na.rm = T)
+dims <- attr(cb, "df")
+at <- seq(rng[1], rng[2], length.out = dims[1] + 2)
+at2 <- seq(rng[1], rng[2], length.out = 40)
+varbasis <- do.call(dlnm::onebasis, c(list(x = at2), attr(cb, "argvar")))
+cenbasis <- do.call(dlnm::onebasis, c(list(x = mean(rng)), attr(cb, "argvar")))
+varbasis <- scale(varbasis, center = cenbasis, scale = F)
+lagvec <- seq(0, 21, by = 1)
+lagbasis <- do.call(dlnm::onebasis, c(list(x = lagvec), attr(cb, "arglag")))
+
+Clag <- shapeConstr(lagbasis, shape = "dec")
+Cmat <- varbasis %x% Clag$Cmat
+checkCmat(Cmat, reduce = F)[1:2]
+
+cmtry <- glm(y3 ~ cb, family = "quasipoisson", method = "cirls.fit",
+    Cmat = list(cb = Cmat))
+Xpred <- dlnm:::mkXpred(type = "cb", basis = cb, at = at2, predvar = at2,
+  predlag = lagvec, cen = 0)
+matfit <- matrix(Xpred %*% coef(cmtry)[-1], length(at2), length(lagvec))

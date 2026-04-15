@@ -47,6 +47,7 @@ shapeConstr.crossbasis <- function(x, vshape, lshape,
   Cvar <- shapeConstr(varbasis, shape = vshape, range = vrange)
 
   # In lag dimension
+  ### Have something that checks var is linear (use df)
   Clag <- shapeConstr(lagbasis, shape = lshape, range = lrange)
 
   #----- Final constraint matrix

@@ -6,6 +6,7 @@
 #
 ################################################################################
 
+#' @export
 shapeConstr.lin <- function(x, shape, ...){
 
   # Check shape parameter

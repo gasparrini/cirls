@@ -63,6 +63,7 @@ These constraints can be used in the \code{constr} formula as functions applied 
 \itemize{
 \item \link[=shapeConstr]{shape}: constraining the shape of an association. Typically used with spline bases or factors.
 \item \link[=zerosumConstr]{zerosum}: specify that a group of coefficients should sum to zero. Typically used for compositional regression.
+\item \link[=boundConstr]{bound}: boundary constraint for an association. Typically used with spline bases or factors.
 }
 }
 

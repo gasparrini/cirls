@@ -5,7 +5,7 @@
 #
 ################################################################################
 
-#' Specify shape constraints
+#' Shape constraints
 #'
 #' @description
 #' Builds a constraint matrix and bound vectors for defining shape constraints on a set of coefficients. This is a generic function designed to be used in the [constr][buildCmat()] formula interface. It allows methods for a wide range of regression terms (see Details).
@@ -48,6 +48,8 @@
 #'
 #' * [onebasis][dlnm::onebasis()]: General method for basis functions generated in the package.
 #' * [ps][dlnm::ps()]: Penalised splines (P-Splines).
+#' * [strata][dlnm::strata()]: Indicator variables defining strata. Here the shape is applied to the coefficient of strata, considering strata like a categorical variable.
+#' * [lin][dlnm::lin()]: Mostly for compatibility with the `dlnm` package. Here `"pos"` and `"inc"` (`"neg"` and `"dec"`) have the same interpretation, a non-negative (non-positive) coefficient associated to the linear term.
 #'
 #' @returns A list containing the constraint matrix `Cmat`, and lower/upper bound vectors (`lb` and `ub`, respectively).
 #'

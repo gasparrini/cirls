@@ -5,7 +5,7 @@
 \alias{shapeConstr}
 \alias{shapeConstr.default}
 \alias{shapeConstr.factor}
-\title{Specify shape constraints}
+\title{Shape constraints}
 \usage{
 shapeConstr(x, ...)
 
@@ -69,6 +69,8 @@ In addition to the default method, \code{shapeConstr} currently supports methods
 \itemize{
 \item \link[dlnm:onebasis]{onebasis}: General method for basis functions generated in the package.
 \item \link[dlnm:ps]{ps}: Penalised splines (P-Splines).
+\item \link[dlnm:strata]{strata}: Indicator variables defining strata. Here the shape is applied to the coefficient of strata, considering strata like a categorical variable.
+\item \link[dlnm:lin]{lin}: Mostly for compatibility with the \code{dlnm} package. Here \code{"pos"} and \code{"inc"} (\code{"neg"} and \code{"dec"}) have the same interpretation, a non-negative (non-positive) coefficient associated to the linear term.
 }
 }
 
