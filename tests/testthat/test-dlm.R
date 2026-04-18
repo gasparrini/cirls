@@ -50,19 +50,19 @@ test_that("shape-constrained DLM works", {
 
 # Positive
 posdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(dlb, lshape = "pos"))
+  constr = ~ shape(dlb, shape = "pos"))
 cp <- crosspred(dlb, posdlm, at = 1)
 expect_true(all(cp$matfit > -sqrt(.Machine$double.eps)))
 
 # Decreasing
 decdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(dlb, lshape = "dec"))
+  constr = ~ shape(dlb, shape = "dec"))
 cp <- crosspred(dlb, decdlm, at = 1)
 expect_true(all(diff(cp$matfit) > -sqrt(.Machine$double.eps)))
 
 # Positive decreasing
 pddlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(dlb, lshape = c("pos", "dec")))
+  constr = ~ shape(dlb, shape = c("pos", "dec")))
 cp <- crosspred(dlb, pddlm, at = 1)
 expect_true(all(cp$matfit > -sqrt(.Machine$double.eps)))
 expect_true(all(diff(cp$matfit) > -sqrt(.Machine$double.eps)))
@@ -83,17 +83,20 @@ test_that("Bound-constrained DLM works", {
 
   # Bound and decreasing
   bndecdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
-    constr = ~ bound(dlb) + shape(dlb, lshape = "dec"))
+    constr = ~ bound(dlb) + shape(dlb, shape = "dec"))
   cp <- crosspred(dlb, bndecdlm, at = 1)
   expect_equal(cp$matfit[length(cp$matfit)], 0, ignore_attr = TRUE,
     tolerance = 10e-8)
   expect_true(all(diff(cp$matfit) > -sqrt(.Machine$double.eps)))
 
   # Bound and positive
+  # Here issues with checkCmat to address
+
   bnposdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
-    constr = ~ bound(dlb) + shape(dlb, lshape = "pos"))
+    constr = ~ shape(dlb, shape = "pos") + bound(dlb))
   cp <- crosspred(dlb, bnposdlm, at = 1)
   expect_equal(cp$matfit[length(cp$matfit)], 0, ignore_attr = TRUE,
     tolerance = 10e-8)
   expect_true(all(cp$matfit > -sqrt(.Machine$double.eps)))
 })
+

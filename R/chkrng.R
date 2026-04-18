@@ -6,7 +6,7 @@
 
 chkrng <- function(rng, knots, msg = FALSE){
 
-  # If not provided, use boundary knots
+  # If not provided, use Inf
   if (is.null(rng)){
     rng <- c(-Inf, Inf)
   } else {
@@ -21,7 +21,7 @@ chkrng <- function(rng, knots, msg = FALSE){
         deparse(rng))
     }
 
-    # Check it contains boundary knots
+    # Check it contains any knot
     if (rng[1] > max(knots) | rng[2] < min(knots)){
       warning("No knot within provided 'rng'")
     } else {

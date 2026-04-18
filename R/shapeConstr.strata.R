@@ -6,11 +6,11 @@
 ################################################################################
 
 #' @export
-shapeConstr.strata <- function(x, shape, range = NULL, intercept = FALSE, ...){
+shapeConstr.strata <- function(x, shape, range = NULL, ...){
 
   # Get parameters
   ref <- attr(x, "ref")
-  intercept <- attr(x, "intercept") %||% intercept
+  intercept <- attr(x, "intercept")
   breaks <- attr(x, "breaks")
   ncat <- length(breaks) + 1
 
@@ -23,13 +23,14 @@ shapeConstr.strata <- function(x, shape, range = NULL, intercept = FALSE, ...){
   cmlist <- shapeConstr.default(diag(ncat), shape = shape, range = rng,
     intercept = TRUE, ...)
 
-  # Adjust for reference: same as in dlnm:::strata
+  # Adjust for reference
   Cmat <- cmlist$Cmat
   if (ref > 0){
     Cmat <- Cmat[, -ref, drop = FALSE]
-  }
-  if (ref > 0 & intercept){
-    Cmat <- cbind(0, Cmat)
+    if (intercept){
+      cp <- chkshp(shape)
+      Cmat <- if (cp[[1]][1] == 0) cbind(1, Cmat) else cbind(0, Cmat)
+    }
   }
 
   # Recompute bounds

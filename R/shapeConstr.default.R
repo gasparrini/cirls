@@ -38,6 +38,9 @@ shapeConstr.default <- function(x, shape, range = NULL, intercept = FALSE, ...) 
   keep <- apply(Cmat, 1, function(r) all(r[!rind] == 0))
   Cmat <- Cmat[keep,, drop = FALSE]
 
+  # Reduce if necessary
+  Cmat <- checkCmat(Cmat, reduce = TRUE, warn = FALSE)$Cmat
+
   # Add bounds attributes
   clist <- list(Cmat = Cmat, lb = rep(0, NROW(Cmat)), ub = rep(Inf, NROW(Cmat)))
 

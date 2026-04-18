@@ -5,24 +5,15 @@
 #
 ################################################################################
 
-#' @export
-boundConstr.crossbasis <- function(x, var = list(), lag = list()){
+#' @exportS3Method
+boundConstr.crossbasis <- function(x, dim = NULL, slice = NULL, overall = FALSE,
+  ...){
 
-  # Extract info on crossbasis
-  cbattr <- attributes(x)
-  dims <- cbattr$df # Dimensions
-  # Full ranges to prepare constraint matrix
-  xrng <- cbattr$range
-  lagrng <- cbattr$lag
+  # Call cbConstr
+  cmlist <- cbConstr(x, constr = "bound", pars = list(...),
+    dim = dim, slice = slice, overall = overall)
 
-  # Recreate template bases for each dimensions
-  varbasis <- do.call(dlnm::onebasis, c(list(x = xrng), cbattr$argvar))
-  lagbasis <- do.call(dlnm::onebasis, c(list(x = lagrng), cbattr$arglag))
-
-  # Marginal constraint matrices
-  Cvar <- do.call(boundConstr, c(list(x = varbasis), var))
-  Clag <- do.call(boundConstr, c(list(x = lagbasis), var))
-
-  # Put together
-  Map("%x%", Cvar, Clag)
+  # Change bound and return
+  cmlist$ub <- cmlist$lb
+  cmlist
 }
