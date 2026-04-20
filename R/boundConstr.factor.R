@@ -11,7 +11,7 @@
 boundConstr.factor <- function(x, intercept = FALSE, ...){
 
   # Get the design matrix
-  xmat <- model.matrix(~ x)
+  xmat <- stats::model.matrix(~ x)
 
   # Get initial constraint matrix from default methods
   cm <- boundConstr.default(xmat, intercept = TRUE, ...)

@@ -82,8 +82,10 @@ test_that("Bound-constrained DLM works", {
     tolerance = 10e-8)
 
   # Bound and decreasing
+  suppressWarnings({
   bndecdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
     constr = ~ bound(dlb) + shape(dlb, shape = "dec"))
+  })
   cp <- crosspred(dlb, bndecdlm, at = 1)
   expect_equal(cp$matfit[length(cp$matfit)], 0, ignore_attr = TRUE,
     tolerance = 10e-8)
@@ -91,9 +93,10 @@ test_that("Bound-constrained DLM works", {
 
   # Bound and positive
   # Here issues with checkCmat to address
-
+  suppressWarnings({
   bnposdlm <- glm(y ~ dlb, family = "quasipoisson", method = "cirls.fit",
     constr = ~ shape(dlb, shape = "pos") + bound(dlb))
+  })
   cp <- crosspred(dlb, bnposdlm, at = 1)
   expect_equal(cp$matfit[length(cp$matfit)], 0, ignore_attr = TRUE,
     tolerance = 10e-8)

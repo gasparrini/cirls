@@ -6,6 +6,8 @@
 #
 ################################################################################
 
+#' @rdname shapeConstr
+#' @order 9
 #' @export
 shapeConstr.lin <- function(x, shape, ...){
 

@@ -5,6 +5,8 @@
 #
 ################################################################################
 
+#' @rdname shapeConstr
+#' @order 8
 #' @export
 shapeConstr.strata <- function(x, shape, range = NULL, ...){
 

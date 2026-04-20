@@ -38,7 +38,7 @@
 #'
 #' ### Categorical variables
 #'
-#' * [factor()]: for factors. Extract the [contrasts][stats::contrasts()] to define the constraint matrix. Here the `intercept` argument has the same interpretation as in the default method, i.e. if set to `TRUE` it means the `glm` model does not include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
+#' * [factor][factor()]: for `factor` objects. Extract the [contrasts][stats::contrasts()] to define the constraint matrix. Here the `intercept` argument has the same interpretation as in the default method, i.e. if set to `TRUE` it means the `glm` model does not include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
 #' * [strata][dlnm::strata()]: Indicator variables defining strata from the [dlnm][dlnm::dlnm()] package. Here the shape is applied to the coefficient of strata, considering strata like a categorical variable.
 #'
 #' ### B-spline bases
@@ -47,9 +47,10 @@
 #' * [ns][splines::ns()]: B-spline bases for natural cubic splines from the [splines][splines()] package. Builds constraints for `bs` that are then adjusted for `ns` specifically.
 #' * [ps][dlnm::ps()]: P-spline bases from the [dlnm][dlnm::dlnm()] package. For `ps`, `deg` should not be reduced to a lower value than its degree.
 #'
-#' ### From the [dlnm][dlnm::dlnm] package
+#' ### Distributed-lag linear and nonlinear models (DLNM)
 #'
-#' * [onebasis][dlnm::onebasis()]: General method for basis functions generated in the package. Internally will call other methods depending on the specified basis.
+#' * [onebasis][dlnm::onebasis()]: General method for basis functions generated in the package. Internally calls the relevant method for the specified basis.
+#' * [crossbasis][boundConstr.crossbasis()]: Most exhaustive method to constrain DLNMs. See its dedicated [help page][boundConstr.crossbasis()].
 #'
 #' @returns A list containing the constraint matrix `Cmat`, and lower/upper bound vectors (`lb` and `ub`, respectively).
 #'

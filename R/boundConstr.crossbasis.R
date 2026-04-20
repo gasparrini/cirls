@@ -5,7 +5,8 @@
 #
 ################################################################################
 
-#' @exportS3Method
+#' @rdname shapeConstr.crossbasis
+#' @export
 boundConstr.crossbasis <- function(x, dim = NULL, slice = NULL, overall = FALSE,
   ...){
 

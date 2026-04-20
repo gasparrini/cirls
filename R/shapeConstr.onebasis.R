@@ -5,9 +5,9 @@
 #
 ################################################################################
 
+#' @rdname shapeConstr
+#' @order 7
 #' @export
-
-# NB: no need for a range argument, as this goes through the ellipsis
 shapeConstr.onebasis <- function(x, shape, ...){
 
   # Extract the right method

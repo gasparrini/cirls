@@ -1,5 +1,5 @@
 ###############################################################################
-# Non-negative coefficient example with the london dataset
+# Constrained DLNM: var dimension
 
 library(dlnm)
 library(splines)
@@ -10,7 +10,6 @@ library(splines)
 
 # Number of years and dow
 ny <- length(unique(format(london$date, "%Y")))
-london$dow <- weekdays(london$date)
 
 # Create a flexible crossbasis
 cb <- crossbasis(london$tmean, lag = 21,
@@ -32,41 +31,41 @@ plot(ucp, ptype = "slice", lag = 0, lwd = 2)
 lines(ucp, ptype = "slice", lag = 5, col = 2, lwd = 2)
 lines(ucp, ptype = "slice", lag = 15, col = 3, lwd = 2)
 legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3,
-  lty = 1:2)
+  lty = 1)
 
 #----- Constrained DLNM
 
 # Fit the model with convexity constraint
 scm <- glm(age0_64 ~ cb + ns(date, df = 7 * ny) + dow, data = london,
   family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(cb, vshape = "cvx"))
+  constr = ~ shape(cb, shape = "cvx"))
 scp <- crosspred(cb, scm, cen = 20)
 
 # Plot slices
 plot(scp, ptype = "slice", lag = 0, lwd = 2)
 lines(scp, ptype = "slice", lag = 5, col = 2, lwd = 2)
 lines(scp, ptype = "slice", lag = 15, col = 3, lwd = 2)
-legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3)
-
+legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3,
+  lty = 1)
 
 #----- Overall only
 
 # Fit the model with a constraint on overall only
 ocm <- glm(age0_64 ~ cb + ns(date, df = 7 * ny) + dow, data = london,
   family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(cb, vshape = "cvx", overall = TRUE))
+  constr = ~ shape(cb, shape = "cvx", overall = TRUE))
 ocp <- crosspred(cb, ocm, cen = 20)
 
-# Plot slices: unconstrained
+# Plot slices: they don't necessarily respect the constraints
 plot(ocp, ptype = "slice", lag = 0, lwd = 2)
 lines(ocp, ptype = "slice", lag = 5, col = 2, lwd = 2)
 lines(ocp, ptype = "slice", lag = 15, col = 3, lwd = 2)
-legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3)
+legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3,
+  lty = 1)
 
 # Plot overall: constrained
 plot(ocp, ptype = "overall", lwd = 2)
 lines(ucp, ptype = "overall", col = 2, lwd = 2, ci = "lines")
-lines(scp, ptype = "overall", col = 3, lwd = 2, ci = "lines")
 legend("topleft", legend = c("Constrained", "Unconstrained"),
   col = 1:2, lty = 1:2)
 
@@ -75,34 +74,13 @@ legend("topleft", legend = c("Constrained", "Unconstrained"),
 # Fit model
 subcm <- glm(age0_64 ~ cb + ns(date, df = 7 * ny) + dow, data = london,
   family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(cb, vshape = "cvx", lrange = c(0, 1)))
+  constr = ~ shape(cb, shape = "cvx", slice = c(0, 1)))
 subcp <- crosspred(cb, subcm, cen = 20)
 
-# Plot slices
+# Plot slices: lags 0 and 5 are constrained but not lag 15
 plot(subcp, ptype = "slice", lag = 0, lwd = 2)
 lines(subcp, ptype = "slice", lag = 5, col = 2, lwd = 2)
 lines(subcp, ptype = "slice", lag = 15, col = 3, lwd = 2)
-legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3)
+legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3, lty = 1)
 
 
-subcm <- glm(age0_64 ~ cb + ns(date, df = 7 * ny) + dow, data = london,
-  family = "quasipoisson", method = "cirls.fit",
-  constr = ~ shape(cb, vshape = "cvx", vrange = c(15, Inf)))
-subcp <- crosspred(cb, subcm, cen = 20)
-
-# Plot slices
-plot(subcp, ptype = "slice", lag = 0, lwd = 2)
-lines(subcp, ptype = "slice", lag = 5, col = 2, lwd = 2)
-lines(subcp, ptype = "slice", lag = 15, col = 3, lwd = 2)
-legend("topleft", legend = sprintf("lag = %i", c(0, 5, 15)), col = 1:3)
-
-#----- Lags
-
-# # Fit model
-# lcm <- glm(age0_64 ~ cb + ns(date, df = 7 * ny) + dow, data = london,
-#   family = "quasipoisson", method = "cirls.fit",
-#   constr = ~ shape(cb, lshape = "dec"))
-# lcp <- crosspred(cb, lcm, cen = 20)
-#
-# # Plot lag-response function
-# plot(lcp, ptype = "slice", var = 0, lwd = 2)

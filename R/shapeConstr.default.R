@@ -6,13 +6,14 @@
 ################################################################################
 
 #' @rdname shapeConstr
+#' @order 2
 #' @export
 shapeConstr.default <- function(x, shape, range = NULL, intercept = FALSE, ...) {
 
   #----- Parameters
 
   # Matrix dimension and check
-  df <- ncol(x) + !intercept
+  df <- NCOL(x) + !intercept
   cpars <- chkshp(shape, df)
 
   # Check range parameter

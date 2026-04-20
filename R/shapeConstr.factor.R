@@ -6,11 +6,12 @@
 ################################################################################
 
 #' @rdname shapeConstr
+#' @order 3
 #' @export
 shapeConstr.factor <- function(x, shape, range = NULL, intercept = FALSE, ...) {
 
   # Get the design matrix
-  xmat <- model.matrix(~ x)
+  xmat <- stats::model.matrix(~ x)
 
   # Get initial constraint matrix from default methods
   Cmat <- shapeConstr.default(xmat, shape = shape, range = range,

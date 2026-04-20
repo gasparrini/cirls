@@ -16,11 +16,11 @@ A data frame of 214 observations and 10 variables. Apart from \code{RI} and \cod
 \item{Ca}{Calcium}
 \item{Ba}{Barium}
 \item{Fe}{Iron}
-\item{type}{Class type (see Details)
+\item{type}{Class type (see Details)}
 }
 }
 \source{
-Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied Statistics with S}. Fourth edition. Springer.
+Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 }
 \usage{
 fgl

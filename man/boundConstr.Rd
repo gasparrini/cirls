@@ -70,7 +70,7 @@ For B-spline bases methods (such as \code{bs}, \code{ps} and \code{ns}), the def
 In addition to the default method, \code{boundConstr} currently supports methods for several classes. The full list can also be consulted through \code{methods(shapeConstr)}.
 \subsection{Categorical variables}{
 \itemize{
-\item \code{\link[=factor]{factor()}}: for factors. Extract the \link[stats:contrasts]{contrasts} to define the constraint matrix. Here the \code{intercept} argument has the same interpretation as in the default method, i.e. if set to \code{TRUE} it means the \code{glm} model does not include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
+\item \link[=factor]{factor}: for \code{factor} objects. Extract the \link[stats:contrasts]{contrasts} to define the constraint matrix. Here the \code{intercept} argument has the same interpretation as in the default method, i.e. if set to \code{TRUE} it means the \code{glm} model does not include an intercept externally to the factor. Note that, in this case, a simple dummy coding is done in R.
 \item \link[dlnm:strata]{strata}: Indicator variables defining strata from the \link[dlnm:dlnm-package]{dlnm} package. Here the shape is applied to the coefficient of strata, considering strata like a categorical variable.
 }
 }
@@ -83,9 +83,10 @@ In addition to the default method, \code{boundConstr} currently supports methods
 }
 }
 
-\subsection{From the \link[dlnm:dlnm-package]{dlnm} package}{
+\subsection{Distributed-lag linear and nonlinear models (DLNM)}{
 \itemize{
-\item \link[dlnm:onebasis]{onebasis}: General method for basis functions generated in the package. Internally will call other methods depending on the specified basis.
+\item \link[dlnm:onebasis]{onebasis}: General method for basis functions generated in the package. Internally calls the relevant method for the specified basis.
+\item \link[=boundConstr.crossbasis]{crossbasis}: Most exhaustive method to constrain DLNMs. See its dedicated \link[=boundConstr.crossbasis]{help page}.
 }
 }
 

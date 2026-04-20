@@ -3,6 +3,7 @@
 
 #' Measurement of forensic glass fragments
 #'
+#' @description
 #' Dataset adapted from the [fgl][MASS::fgl()] dataset. Chemical composition of fragments of glass collected in forensic work.
 #'
 #' @format A data frame of 214 observations and 10 variables. Apart from `RI` and `type`, all other variables represent a ratio of the given chemical component.
@@ -16,7 +17,7 @@
 #'  \item{Ca}{Calcium}
 #'  \item{Ba}{Barium}
 #'  \item{Fe}{Iron}
-#'  \item{type}{Class type (see Details)
+#'  \item{type}{Class type (see Details)}
 #' }
 #'
 #' @details
@@ -25,7 +26,7 @@
 #' The source of this dataset is the MASS package. The dataset has been adapted for compositional data analysis by adding a small increment to null values and rescaling all chemical components to sum to unity.
 #'
 #' @source
-#' Venables, W. N. and Ripley, B. D. (2002) *Modern Applied Statistics with S*. Fourth edition. Springer.
+#' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @example inst/examples/ex_fgl_coda.R
 #'

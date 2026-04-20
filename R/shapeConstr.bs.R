@@ -5,6 +5,8 @@
 #
 ################################################################################
 
+#' @rdname shapeConstr
+#' @order 4
 #' @export
 shapeConstr.bs <- function(x, shape, range = NULL, ...){
 
