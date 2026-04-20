@@ -1,3 +1,17 @@
+# 0.4.0-5 - DLNM
+
+## New feature
+- Shape-constrained DLNM: methods dedicated to `crossbasis` objects. Add constraints to the exposure-response association or on the lag-response association (for DLMs).
+- New Constr method: `boundConstr` to contraint the bounds of an association
+- New parameter `range` fhor `shapeConstr`: constrain subrange of `x`
+
+## Changes
+- Some changes to the documentation for the `shapeConstr` generic
+
+## Bug fixes
+- Fixed how the terms are checked in the `constr` formula
+- Fixed issues with the `shapeConstr.strata` method
+
 # 0.4.0-4
 
 - New `shapeConstr` method for `strata` from `dlnm`

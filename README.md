@@ -18,10 +18,10 @@ install.packages("cirls")
 
 ```
 
-The development version can be installed from GitHub using the `devtools` package as
+The development version can be installed from GitHub using the `pak` package as
 
 ```R
-devtools::install_github("PierreMasselot/cirls")
+pak::pkg_install("PierreMasselot/cirls")
 ```
 
 Please check the [NEWS.md](NEWS.md) file for changes in the development version compared to the CRAN one.

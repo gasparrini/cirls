@@ -30,8 +30,6 @@ Dataset adapted from the \link[MASS:fgl]{fgl} dataset. Chemical composition of f
 }
 \details{
 The fragments were originally classed into seven types, one of which was absent in this dataset. The categories which occur are window float glass (\code{WinF}: 70), window non-float glass (\code{WinNF}: 76), vehicle window glass (\code{Veh}: 17), containers (\code{Con}: 13), tableware (\code{Tabl}: 9) and vehicle headlamps (\code{Head}: 29).
-
-The source of this dataset is the MASS package. The dataset has been adapted for compositional data analysis by adding a small increment to null values and rescaling all chemical components to sum to unity.
 }
 \examples{
 ###############################################################################
