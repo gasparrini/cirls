@@ -5,7 +5,7 @@
 \alias{fgl}
 \title{Measurement of forensic glass fragments}
 \format{
-A data frame of 214 observations and 10 variables. Apart from \code{RI} and \code{type} all other variables represent a ratio of the given chemical component.
+A data frame of 214 observations and 10 variables. Apart from \code{RI} and \code{type}, all other variables represent a ratio of the given chemical component.
 \describe{
 \item{RI}{Refractive index; more precisely the refractive index is 1.518xxxx.}
 \item{Na}{Sodium}
@@ -16,11 +16,11 @@ A data frame of 214 observations and 10 variables. Apart from \code{RI} and \cod
 \item{Ca}{Calcium}
 \item{Ba}{Barium}
 \item{Fe}{Iron}
-\item{type}{The fragments were originally classed into seven types, one of which was absent in this dataset. The categories which occur are window float glass (\code{WinF}: 70), window non-float glass (\code{WinNF}: 76), vehicle window glass (\code{Veh}: 17), containers (\code{Con}: 13), tableware (\code{Tabl}: 9) and vehicle headlamps (\code{Head}: 29)}
+\item{type}{Class type (see Details)}
 }
 }
 \source{
-Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied Statistics with S}. Fourth edition. Springer.
+Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 }
 \usage{
 fgl
@@ -29,6 +29,8 @@ fgl
 Dataset adapted from the \link[MASS:fgl]{fgl} dataset. Chemical composition of fragments of glass collected in forensic work.
 }
 \details{
+The fragments were originally classed into seven types, one of which was absent in this dataset. The categories which occur are window float glass (\code{WinF}: 70), window non-float glass (\code{WinNF}: 76), vehicle window glass (\code{Veh}: 17), containers (\code{Con}: 13), tableware (\code{Tabl}: 9) and vehicle headlamps (\code{Head}: 29).
+
 The source of this dataset is the MASS package. The dataset has been adapted for compositional data analysis by adding a small increment to null values and rescaling all chemical components to sum to unity.
 }
 \examples{

@@ -27,15 +27,15 @@ Cmat2Clist <- function(cm, label, nc) {
 
   # bounds
   if(is.null(lb)) {
-    # Warning can be a bit annoying. Add a switch
-    "No `lb` found for %s. Setting it to 0" |>
-    sprintf(label) |> warning()
+    # Warning can be a bit annoying. Add a switch?
+    # "No `lb` found for %s. Setting it to 0" |>
+    # sprintf(label) |> warning()
     lb <- 0
   }
   lb <- rep_len(lb, nr)
   if(is.null(ub)) {
-    "No `ub` found for %s. Setting it to Inf" |>
-    sprintf(label) |> warning()
+    # "No `ub` found for %s. Setting it to Inf" |>
+    # sprintf(label) |> warning()
     ub <- Inf
   }
   ub <- rep_len(ub, nr)

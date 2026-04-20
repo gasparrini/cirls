@@ -5,10 +5,10 @@
 \alias{warming}
 \title{Global temperature anomaly}
 \format{
-A data frame of 166 observations (years) and two? variables:
+A data frame of 166 observations (years) and three variables:
 \describe{
-\item{year}{The year.}
-\item{decade}{The year rounded down to to the decade.}
+\item{year}{The calendar year.}
+\item{decade}{The related decade.}
 \item{anomaly}{The difference between the global annual temperature and the average over 1961-1990.}
 }
 }
@@ -19,7 +19,7 @@ Jones, P.D., Parker, D.E., Osborn, T.J., Briffa, K.R., 2000. Global and Hemisphe
 warming
 }
 \description{
-Provides annual global temperature anomaly compared to the reference period 1961-1990 from 1850 to 2015
+Provides annual global temperature anomaly compared to the reference period 1961-1990 from 1850 to 2015.
 }
 \examples{
 ###############################################################################

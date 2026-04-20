@@ -131,18 +131,19 @@ buildCmat <- function(mf, assign = NULL, constr = NULL, Cmat = NULL, lb = NULL,
   csvars <- if(!is.null(constr))
     attr(stats::terms(constr), "variables") else list()
   cslabs <- sapply(csvars, deparse)[-1]
+  csterms <- lapply(csvars[-1], all.vars)
 
   # Identify the terms (optionally multiple) and check if in model formula
-  csterms <- lapply(csvars[-1], all.vars)
-  ind <- !sapply(csterms, function(x) all(x %in% termlab))
-  if(any(ind)){
-    warning(sprintf(
-      "dropped term(s) in constr that contain variables not in model formula: %s",
-      paste(cslabs[ind], collapse = ", ")))
-    csvars <- csvars[-(which(ind) + 1)]
-    csterms <- csterms[!ind]
-    cslabs <- cslabs[!ind]
-  }
+  # Removed as was causing problem when a specific argument is provided as variable
+  # ind <- !sapply(csterms, function(x) all(x %in% termlab))
+  # if(any(ind)){
+  #   warning(sprintf(
+  #     "dropped term(s) in constr that contain variables not in model formula: %s",
+  #     paste(cslabs[ind], collapse = ", ")))
+  #   csvars <- csvars[-(which(ind) + 1)]
+  #   csterms <- csterms[!ind]
+  #   cslabs <- cslabs[!ind]
+  # }
 
   # Intercept indicator
   intind <- if(!intercept && any(firstF))

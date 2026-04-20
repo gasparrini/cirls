@@ -54,3 +54,14 @@ test_that("checkCmat takes good decisions on irreducibility", {
   expect_no_warning(check2 <- checkCmat(cmat2))
   expect_equal(sum(check2$redundant), 0)
 })
+
+
+#----- Some edge cases
+
+# test_that("checkCmat works in some edge cases", {
+#
+#   # Two reducant constraints, including an equality one
+#   cmlist <- Map(function(x, y) rbind(as.matrix(x), as.matrix(y)),
+#     boundConstr(diag(5)), shapeConstr(diag(5), shape = "pos"))
+#
+# })

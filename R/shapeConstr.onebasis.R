@@ -5,6 +5,8 @@
 #
 ################################################################################
 
+#' @rdname shapeConstr
+#' @order 7
 #' @export
 shapeConstr.onebasis <- function(x, shape, ...){
 
@@ -18,8 +20,8 @@ shapeConstr.onebasis <- function(x, shape, ...){
   }
 
   # Call the right method
-  pars <- list(x = x, shape = shape, intercept = attr(x, "intercept"))
+  pars <- list(x = x, shape = shape)
   pars <- utils::modifyList(pars, list(...))
-  pars <- pars[names(pars) %in% names(formals(met))]
+  # pars <- pars[names(pars) %in% names(formals(met))]
   do.call(met, pars)
 }

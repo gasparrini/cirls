@@ -8,6 +8,8 @@
 #' @format A data frame with 2922 observations and 12 variables:
 #' \describe{
 #'  \item{date}{Date in the period 1996-2003}
+#'  \item{doy}{Day of year as decimal number}
+#'  \item{dow}{Day of week}
 #'  \item{death}{Counts of all-cause and all-age mortality}
 #'  \item{age0_64}{Counts of mortality for age group 0-64}
 #'  \item{age65_74}{Counts of mortality for age group 65-74}

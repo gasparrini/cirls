@@ -1,33 +1,32 @@
 ################################################################################
 #
-# Shape constraint matrix method:
-# Default method
+# Method to create a constraint matrix for constraint on the bound of smooths
+# factor method
 #
 ################################################################################
 
-#' @rdname shapeConstr
+#' @rdname boundConstr
 #' @order 3
 #' @export
-shapeConstr.factor <- function(x, shape, range = NULL, intercept = FALSE, ...) {
+boundConstr.factor <- function(x, intercept = FALSE, ...){
 
   # Get the design matrix
   xmat <- stats::model.matrix(~ x)
 
   # Get initial constraint matrix from default methods
-  Cmat <- shapeConstr.default(xmat, shape = shape, range = range,
-    intercept = TRUE)$Cmat
+  cm <- boundConstr.default(xmat, intercept = TRUE, ...)
 
   # Apply contrast if intercept is not included
   # NB: no contrast is applied in R when the model does not include an intercept
+  if (!intercept & any(cm$Cmat[,1] != 0)) warning(
+    "Need an intercept included to bound constrain on the left")
   if (isFALSE(intercept)){
     ctr <- stats::contrasts(x)
-    Cmat <- Cmat %*% ctr
+    cm$Cmat <- cm$Cmat %*% ctr
+    cm$lb <- rep_len(cm$lb, NROW(cm$Cmat))
+    cm$ub <- rep_len(cm$ub, NROW(cm$Cmat))
   }
 
-  # Bounds
-  lb <- rep(0, NROW(Cmat))
-  ub <- rep(Inf, NROW(Cmat))
-
   # Return
-  list(Cmat = Cmat, lb = lb, ub = ub)
+  cm
 }

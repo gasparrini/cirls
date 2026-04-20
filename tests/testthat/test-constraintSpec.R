@@ -69,10 +69,12 @@ test_that("buildCmat stops for unknown function", {
   expect_error(buildCmat(mf, constr = constr), regexp = "z")
 })
 
-test_that("buildCmat removes unknown terms", {
-  constr <- ~ shape(basis, "inc") + zerosum(unknown)
-  expect_warning(res <- buildCmat(mf, constr = constr), regexp = "unknown")
-})
+# This is not a feature anymore, it created complexities
+# This wasn't working before: ~ shape(basis, shape = shp)
+# test_that("buildCmat removes unknown terms", {
+#   constr <- ~ shape(basis, "inc") + zerosum(unknown)
+#   expect_warning(res <- buildCmat(mf, constr = constr), regexp = "unknown")
+# })
 
 test_that("it works with more complex cases", {
   cm1 <- shapeConstr(basis, "inc")
@@ -129,8 +131,10 @@ test_that("buildCmat fails when list wrongly specified", {
   expect_warning(buildCmat(Cmat = list(basis12 = cbas1), mf = mf),
     regexp = "basis12") |> expect_warning("No valid constraint")
   expect_warning(buildCmat(Cmat = list(basis1 = cbas1, x = cz), mf = mf),
-    regexp = ": x") |> expect_warning(regexp = "No `lb` found") |>
-    expect_warning(regexp = "No `ub` found")
+    regexp = ": x")
+  # Not a feature anymore - led to excessive warnings
+  # |> expect_warning(regexp = "No `lb` found") |>
+  #   expect_warning(regexp = "No `ub` found")
 
   # When column number don't match
   expect_error(buildCmat(Cmat = list(basis = cbas1), mf = mf),
@@ -154,9 +158,7 @@ test_that("buildCmat works with list instead of model.frame", {
     buildCmat(Cmat = list(basis = cbas), mf = ml)$Cmat,
     cbind(0, cbas, 0, 0, 0),
     ignore_attr = TRUE
-  ) |>
-    expect_warning(regexp = "No `lb` found") |>
-    expect_warning(regexp = "No `ub` found")
+  )
 
   # Both basis and basis1
   expect_equal(
@@ -251,5 +253,4 @@ test_that("Providing several terms work", {
     cbind(0, t(rep(1, ncol(basis) + ncol(basis1))), 0),
     ignore_attr = TRUE)
 })
-
 
